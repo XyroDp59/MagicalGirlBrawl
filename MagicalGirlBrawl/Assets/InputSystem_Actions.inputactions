@@ -63,7 +63,7 @@
                     "name": "Previous",
                     "type": "Button",
                     "id": "2776c80d-3c14-4091-8c56-d04ced07a2b0",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -343,6 +343,17 @@
                 },
                 {
                     "name": "",
+                    "id": "ee7183db-de4e-4b52-8f32-4d320f277132",
+                    "path": "<HID::Bensussen Deutsch & Associates,Inc.(BDA) NSW Wired controller>/button8",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Joystick;Gamepad",
+                    "action": "Next",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "f2e9ba44-c423-42a7-ad56-f20975884794",
                     "path": "<Keyboard>/leftShift",
                     "interactions": "",
@@ -409,6 +420,17 @@
                 },
                 {
                     "name": "",
+                    "id": "2b99631c-eef4-465c-a8c7-e8885cd32ea7",
+                    "path": "<Joystick>/trigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "1534dc16-a6aa-499d-9c3a-22b47347b52a",
                     "path": "<Keyboard>/1",
                     "interactions": "",
@@ -425,6 +447,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
+                    "action": "Previous",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7a31a10e-0e72-493c-ac0d-ae1d62521933",
+                    "path": "<HID::Bensussen Deutsch & Associates,Inc.(BDA) NSW Wired controller>/button7",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Joystick;Gamepad",
                     "action": "Previous",
                     "isComposite": false,
                     "isPartOfComposite": false

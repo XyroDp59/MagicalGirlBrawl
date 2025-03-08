@@ -29,7 +29,6 @@ public class Movement : MonoBehaviour
     private void OnMove(InputValue value)
     {
         direction = value.Get<Vector2>().x;
-        Debug.Log(value);
     }
 
     public void Reset_Double_Jump_Ground()
