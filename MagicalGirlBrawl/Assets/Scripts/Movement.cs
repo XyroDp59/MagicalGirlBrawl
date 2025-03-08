@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class Movement : MonoBehaviour
 {
     private Rigidbody2D rb;
-    private float direction = 0f; 
+    private float direction = 0f;
     [SerializeField] private float move_speed = 7f;
     [SerializeField] private float jump_power = 17f;
     [SerializeField] public int nb_double_jump = 2;
@@ -21,7 +21,7 @@ public class Movement : MonoBehaviour
 
     private void OnJump()
     {
-        if (nb_double_jump <= 0) return; 
+        if (nb_double_jump <= 0) return;
         nb_double_jump = nb_double_jump - 1;
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jump_power);
     }
@@ -29,7 +29,7 @@ public class Movement : MonoBehaviour
     private void OnMove(InputValue value)
     {
         direction = value.Get<Vector2>().x;
-        rb.linearVelocity = new Vector2(direction * move_speed, rb.linearVelocity.y);
+        Debug.Log(value);
     }
 
     public void Reset_Double_Jump_Ground()
@@ -44,6 +44,7 @@ public class Movement : MonoBehaviour
             nb_double_jump = 1;
         }
     }
+
     public void Reset_Double_Jump_Switch()
     {
         if (nb_double_jump == 0)
@@ -55,6 +56,7 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        rb.linearVelocity = new Vector2(direction * move_speed, rb.linearVelocity.y);
         //direction = Input.GetAxisRaw("Horizontal");
         //rb.linearVelocity = new Vector2(direction * move_speed, rb.linearVelocity.y);
 
