@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Movement : MonoBehaviour
 {
+    public bool isActive = false;
     private Rigidbody2D rb;
     private float direction = 0f;
     [SerializeField] private float move_speed = 7f;
@@ -29,6 +30,7 @@ public class Movement : MonoBehaviour
 
     private void OnJump()
     {
+        if(!isActive) return;
         if (nb_double_jump <= 0) return;
         nb_double_jump = nb_double_jump - 1;
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jump_power);
@@ -36,6 +38,7 @@ public class Movement : MonoBehaviour
 
     private void OnMove(InputValue value)
     {
+        if(!isActive) return;
         direction = value.Get<Vector2>().x;
         _animator.SetBool(_walkBoolHash, direction != 0);
         float newLocalXScale = transform.localScale.x;
