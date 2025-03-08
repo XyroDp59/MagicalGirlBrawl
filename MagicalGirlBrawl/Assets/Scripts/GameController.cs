@@ -38,6 +38,8 @@ public class GameController : MonoBehaviour
 
     IEnumerator StartFight()
     {
+        Debug.Log("hihiha");
+        startAnnouncementText.transform.parent.gameObject.SetActive(true);
         for (int i = decompteClip.Count; i > 0; i--)
         {
             startAnnouncementText.text = decompteString[i];
