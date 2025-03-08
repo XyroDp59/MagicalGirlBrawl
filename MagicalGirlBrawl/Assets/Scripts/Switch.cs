@@ -22,7 +22,7 @@ public class Switch : MonoBehaviour
         int i = 0;
         foreach (var player in Available)
         {
-            player.isActive = i == _current;
+            player.SetState(i == _current);
             i += 1;
         }
     }
@@ -36,7 +36,7 @@ public class Switch : MonoBehaviour
         int i = 0;
         foreach (var player in Available)
         {
-            player.isActive = i == _current;
+            player.SetState(i == _current);
             i += 1;
         }
     }
@@ -44,8 +44,8 @@ public class Switch : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Available[0].isActive = false;
-        Available[1].isActive = false;
+        Available[0].SetState(false);
+        Available[1].SetState(false);
     }
 
     // Update is called once per frame

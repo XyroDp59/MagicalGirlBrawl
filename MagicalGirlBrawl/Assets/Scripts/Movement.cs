@@ -35,6 +35,15 @@ public class Movement : MonoBehaviour
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jump_power);
     }
 
+    public void SetState(bool state)
+    {
+        isActive = state;
+        if (!state)
+        {
+            _animator.SetBool(_walkBoolHash, false);
+        }
+    }
+
     private void OnMove(InputValue value)
     {
         if(!isActive) return;
@@ -75,7 +84,14 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        rb.linearVelocity = new Vector2(direction * move_speed, rb.linearVelocity.y);
+        if(isActive)
+        {
+            rb.linearVelocity = new Vector2(direction * move_speed, rb.linearVelocity.y);
+        }
+        else
+        {
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+        }
         //direction = Input.GetAxisRaw("Horizontal");
         //rb.linearVelocity = new Vector2(direction * move_speed, rb.linearVelocity.y);
 
