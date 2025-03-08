@@ -17,7 +17,7 @@ public class GameController : MonoBehaviour
 
 
     AudioSource source;
-    WaitForSeconds second = new WaitForSeconds(1);
+    WaitForSeconds second;
     public GameObject restroom;
     [SerializeField] TextMeshProUGUI startAnnouncementText;
 
@@ -25,6 +25,7 @@ public class GameController : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        second = new WaitForSeconds(1);
     }
 
     public void PlayerIsReady(Player p)
@@ -40,7 +41,8 @@ public class GameController : MonoBehaviour
     {
         Debug.Log("hihiha");
         startAnnouncementText.transform.parent.gameObject.SetActive(true);
-        for (int i = decompteClip.Count; i > 0; i--)
+        startAnnouncementText.text = decompteString[3];
+        for (int i = decompteString.Count-1; i > 0; i--)
         {
             startAnnouncementText.text = decompteString[i];
             //source.clip = decompteClip[i];

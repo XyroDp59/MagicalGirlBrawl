@@ -16,7 +16,7 @@ public class Area_of_Attack : MonoBehaviour
         Destroy(gameObject,0.25f);
     }
 
-    private void OnCollisionEnter2D(Collider collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         return;//Add damage dealt to player using the Damage curve
     }
