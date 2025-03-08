@@ -6,7 +6,7 @@ public class Switch : MonoBehaviour
 {
     private List<Movement> Available;
 
-    public void Empty(List<Movement> l)
+    public bool Empty(List<Movement> l)
     {
         return l.Count == 0;
     }

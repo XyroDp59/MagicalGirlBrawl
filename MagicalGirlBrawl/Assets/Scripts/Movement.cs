@@ -21,6 +21,14 @@ public class Movement : MonoBehaviour
     {
         nb_double_jump = 2;
     }
+
+    public void Remove_Ground_Jump()
+    {
+        if (nb_double_jump == 2)
+        {
+            nb_double_jump = 1;
+        }
+    }
     public void Reset_Double_Jump_Switch()
     {
         if (nb_double_jump == 0)
@@ -47,6 +55,14 @@ public class Movement : MonoBehaviour
         if (other.gameObject.CompareTag("Ground"))
         {
             Reset_Double_Jump_Ground();
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Ground"))
+        {
+            Remove_Ground_Jump();
         }
     }
 }
