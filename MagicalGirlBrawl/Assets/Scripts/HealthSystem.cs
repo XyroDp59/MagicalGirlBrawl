@@ -9,13 +9,13 @@ public class HealthSystem : MonoBehaviour
     private int currentHealth;
 
     public UnityEvent<Movement> TotemDeath;
-    Switch switchSystem;
+    Player player;
 
     private void Start()
     {
         currentHealth = maxHealth;
-        switchSystem = transform.parent.GetComponent<Switch>();
-        UnityAction<Movement> rm = switchSystem.RemoveMovement;
+        player = transform.parent.GetComponent<Player>();
+        UnityAction<Movement> rm = player.RemoveMovement;
         TotemDeath.AddListener(rm);
 
     }

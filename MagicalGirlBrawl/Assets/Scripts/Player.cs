@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Switch : MonoBehaviour
+public class Player : MonoBehaviour
 {
     [SerializeField] private int team;
     [SerializeField] private List<Movement> Available;
@@ -17,7 +17,7 @@ public class Switch : MonoBehaviour
         }
         else
         {
-
+            GameController.instance.RestartGame();
         }
     }
 
