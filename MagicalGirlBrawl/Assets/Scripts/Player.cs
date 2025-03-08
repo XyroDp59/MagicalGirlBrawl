@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
@@ -12,7 +14,31 @@ public class Player : MonoBehaviour
     private int _current;
 
     private Color playerColor;
+    public UnityEvent<InputAction.CallbackContext> onJump = new();
+    public UnityEvent<InputAction.CallbackContext> onMove = new();
+    public UnityEvent<InputAction.CallbackContext> onCast = new();
+    public UnityEvent<InputAction.CallbackContext> onSmash = new();
 
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        onJump.Invoke(context);
+    }
+
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        onMove.Invoke(context);
+    }
+
+    public void OnCast(InputAction.CallbackContext context)
+    {
+        onCast.Invoke(context);
+    }
+
+    public void OnSmash(InputAction.CallbackContext context)
+    {
+        onSmash.Invoke(context);
+    }
+    
     private void Awake()
     {
         playerCount++;
@@ -41,8 +67,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void OnPrevious()
+    public void OnPrevious(InputAction.CallbackContext context)
     {
+        if (!context.started) return;
         if (Available.Count == 0) return;
         _current -= 1;
         if(_current < 0) _current += Available.Count;
@@ -55,8 +82,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void OnNext()
+    public void OnNext(InputAction.CallbackContext context)
     {
+        if (!context.started) return;
         if (Available.Count == 0) return;
         _current += 1;
         _current %= Available.Count;

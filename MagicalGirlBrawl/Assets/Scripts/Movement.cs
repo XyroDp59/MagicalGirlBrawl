@@ -50,9 +50,9 @@ public class Movement : MonoBehaviour
         smashAttack = InputSystem.actions.FindAction("Smash");
     }
 
-    private void OnJump(InputValue value)
+    public void OnJump(InputAction.CallbackContext context)
     {
-        Debug.Log(value.isPressed);
+        if (!context.started) return;
         if(!isActive) return;
         if (nb_double_jump <= 0) return;
         nb_double_jump = nb_double_jump - 1;
@@ -95,10 +95,10 @@ public class Movement : MonoBehaviour
         }
     }
 
-    private void OnMove(InputValue value)
+    public void OnMove(InputAction.CallbackContext context)
     {
         if(!isActive) return;
-        direction = value.Get<Vector2>().x;
+        direction = context.ReadValue<Vector2>().x;
         _animator.SetBool(_walkBoolHash, direction != 0);
         float newYRotation = transform.rotation.eulerAngles.y;
         if (direction < 0) newYRotation = - 180;
@@ -106,8 +106,9 @@ public class Movement : MonoBehaviour
         transform.rotation = Quaternion.Euler(new Vector3(0f, newYRotation, 0f));
     }
 
-    private void OnAttack()
+    public void OnAttack(InputAction.CallbackContext context)
     {
+        if (!context.started) return;
         if (!isActive) return;
         _animator.SetTrigger(_castTriggerHash);
         Instantiate(Projectile_Prefab, Launch_Offset.position, transform.rotation);
@@ -120,7 +121,7 @@ public class Movement : MonoBehaviour
         a.charged_time = charged_time;
         charged_time = 0f;
     }
-    private void OnSmash()
+    public void OnSmash(InputAction.CallbackContext context)
     {
         charging = true;
     }
@@ -165,11 +166,6 @@ public class Movement : MonoBehaviour
         else
         {
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-        }
-
-        if (smashAttack.WasReleasedThisFrame())
-        {
-            Debug.Log("smash");
         }
     }
 
