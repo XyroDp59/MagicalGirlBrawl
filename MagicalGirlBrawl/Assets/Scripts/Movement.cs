@@ -57,7 +57,8 @@ public class Movement : MonoBehaviour
 
     private void OnAttack()
     {
-        Instantiate(Projectile_Prefab, transform.position + Launch_Offset.position, transform.rotation);
+        if (!isActive) return;
+        Instantiate(Projectile_Prefab, Launch_Offset.position, transform.rotation);
     }
 
     public void Reset_Double_Jump_Ground()
