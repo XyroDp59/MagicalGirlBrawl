@@ -324,7 +324,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  healthBar: {fileID: 2886716805970156555}
+  healthBar: {fileID: 72776480421386685}
   TotemDeath:
     m_PersistentCalls:
       m_Calls: []
@@ -586,6 +586,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bb70f81c3db7e174bbc664828678cfbf, type: 3}
+--- !u!224 &72776480421386685 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 7816320698135982165, guid: bb70f81c3db7e174bbc664828678cfbf, type: 3}
+  m_PrefabInstance: {fileID: 7889087815309896168}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &2886716805970156555 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5004631898176681443, guid: bb70f81c3db7e174bbc664828678cfbf, type: 3}

@@ -8,6 +8,7 @@ public class Movement : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer childRenderer;
     private SpriteRenderer _renderer;
+    private HealthSystem _healthSystem;
     public bool isActive = false;
     private Rigidbody2D rb;
     private float direction = 0f;
@@ -20,12 +21,22 @@ public class Movement : MonoBehaviour
     private Animator _animator;
     private float _defaultYRotation;
     private PlayerInput _playerInput;
+    private InputAction smashAttack;
     [SerializeField] private ProjectileBehaviour Projectile_Prefab;
     [SerializeField] private Area_of_Attack Smash_Prefab;
     [SerializeField] private Transform Launch_Offset;
     [SerializeField] private GameObject grabber;
     private float charged_time = 0f;
     private bool charging = false;
+    
+    private GrabState _grabState;
+
+    private enum GrabState
+    {
+        Normal,
+        Grabbed,
+        Grabber
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -34,10 +45,14 @@ public class Movement : MonoBehaviour
         //_playerInput = GetComponent<PlayerInput>();
         _animator = GetComponent<Animator>();
         _renderer = GetComponent<SpriteRenderer>();
+        _grabState = GrabState.Normal;
+        _healthSystem = GetComponent<HealthSystem>();
+        smashAttack = InputSystem.actions.FindAction("Smash");
     }
 
-    private void OnJump()
+    private void OnJump(InputValue value)
     {
+        Debug.Log(value.isPressed);
         if(!isActive) return;
         if (nb_double_jump <= 0) return;
         nb_double_jump = nb_double_jump - 1;
@@ -151,14 +166,11 @@ public class Movement : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
         }
-        //direction = Input.GetAxisRaw("Horizontal");
-        //rb.linearVelocity = new Vector2(direction * move_speed, rb.linearVelocity.y);
 
-        // if ((Input.GetButtonDown("Jump"))&&(nb_double_jump > 0))
-        // {
-        //     nb_double_jump = nb_double_jump - 1;
-        //     rb.linearVelocity = new Vector2(rb.linearVelocity.x, jump_power);
-        // }
+        if (smashAttack.WasReleasedThisFrame())
+        {
+            Debug.Log("smash");
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -166,6 +178,11 @@ public class Movement : MonoBehaviour
         if (other.gameObject.CompareTag("Ground"))
         {
             Reset_Double_Jump_Ground();
+        }
+
+        if (other.gameObject.layer == 7)
+        {
+            _healthSystem.addHealth(-30);
         }
     }
 
