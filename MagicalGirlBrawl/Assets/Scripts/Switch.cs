@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,9 +9,16 @@ public class Switch : MonoBehaviour
     [SerializeField] private List<Movement> Available;
     private int _current;
 
-    public bool Empty(List<Movement> l)
+    public void RemoveMovement(Movement m)
     {
-        return l.Count == 0;
+        if(Available.Count > 0)
+        {
+            Available.Remove(m);
+        }
+        else
+        {
+
+        }
     }
 
     public void OnPrevious()
@@ -46,11 +54,5 @@ public class Switch : MonoBehaviour
     {
         Available[0].SetState(false);
         Available[1].SetState(false);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

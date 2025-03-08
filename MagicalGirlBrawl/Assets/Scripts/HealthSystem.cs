@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,11 +8,16 @@ public class HealthSystem : MonoBehaviour
     [SerializeField] private RectTransform healthBar;
     private int currentHealth;
 
-    UnityEvent TotemDeath;
+    public UnityEvent<Movement> TotemDeath;
+    Switch switchSystem;
 
     private void Start()
     {
         currentHealth = maxHealth;
+        switchSystem = transform.parent.GetComponent<Switch>();
+        UnityAction<Movement> rm = switchSystem.RemoveMovement;
+        TotemDeath.AddListener(rm);
+
     }
     public void addHealth(int health)
     {
@@ -20,7 +26,7 @@ public class HealthSystem : MonoBehaviour
         healthBar.anchorMax = new Vector2(f, 1);
         if (currentHealth <= 0)
         {
-            TotemDeath.Invoke();    
+            TotemDeath.Invoke(GetComponent<Movement>());    
         }
     }
 }
