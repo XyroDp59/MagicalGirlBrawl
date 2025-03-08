@@ -34,6 +34,8 @@ public class Movement : MonoBehaviour
     private float _chargedTime = 0f;
    
     
+    [SerializeField] private ChargingParticle chargingSmashParticles;
+
     private GrabState _grabState;
 
     private enum GrabState
@@ -205,6 +207,7 @@ public class Movement : MonoBehaviour
         if (_charging)
         {
             _chargedTime += Time.deltaTime;
+            chargingSmashParticles.Evaluate(charged_time);
             if ((_chargedTime > 3)/*||()*/)
             {
                 Smash();
