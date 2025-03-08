@@ -207,7 +207,7 @@ public class Movement : MonoBehaviour
         if (_charging)
         {
             _chargedTime += Time.deltaTime;
-            chargingSmashParticles.Evaluate(charged_time);
+            chargingSmashParticles.Evaluate(_chargedTime);
             if ((_chargedTime > 3)/*||()*/)
             {
                 Smash();
