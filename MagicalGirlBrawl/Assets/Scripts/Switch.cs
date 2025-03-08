@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Switch : MonoBehaviour
 {
+    [SerializeField] private int team;
     [SerializeField] private List<Movement> Available;
-    [SerializeField] private Movement Current;
+    private int _current;
 
     public bool Empty(List<Movement> l)
     {
@@ -14,65 +15,37 @@ public class Switch : MonoBehaviour
 
     public void OnPrevious()
     {
-        Debug.Log("Entree");
-        if (Available.Count == 2)
+        if (Available.Count == 0) return;
+        _current -= 1;
+        if(_current < 0) _current += Available.Count;
+        Debug.Log(_current);
+        int i = 0;
+        foreach (var player in Available)
         {
-            Debug.Log("2 elem");
-            Current.enabled = false;
-            Available.Add(Current);
-            Current = Available[0];
-            Available.Remove(Current);
-            Current.enabled = true;
-        }
-        else
-        {
-            if (Available.Count == 1)
-            {
-                Current.enabled = false;
-                Available.Add(Current);
-                Current = Available[0];
-                Available.Remove(Current);
-                Current.enabled = true;
-            }
-            else
-            {
-                return;
-            }
+            player.SetState(i == _current);
+            i += 1;
         }
     }
 
     public void OnNext()
     {
-        if (Available.Count == 2)
+        if (Available.Count == 0) return;
+        _current += 1;
+        _current %= Available.Count;
+        Debug.Log(_current);
+        int i = 0;
+        foreach (var player in Available)
         {
-            Current.enabled = false;
-            Available.Add(Current);
-            Current = Available[1];
-            Available.Remove(Current);
-            Current.enabled = true;
-        }
-        else
-        {
-            if (Available.Count == 1)
-            {
-                Current.enabled = false;
-                Available.Add(Current);
-                Current = Available[0];
-                Available.Remove(Current);
-                Current.enabled = true;
-            }
-            else
-            {
-                return;
-            }
+            player.SetState(i == _current);
+            i += 1;
         }
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Available[0].enabled = false;
-        Available[1].enabled = false;
+        Available[0].SetState(false);
+        Available[1].SetState(false);
     }
 
     // Update is called once per frame

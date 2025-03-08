@@ -2,9 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class Movement : MonoBehaviour
 {
+    [SerializeField] private SpriteRenderer childRenderer;
+    private SpriteRenderer _renderer;
+    public bool isActive = false;
     private Rigidbody2D rb;
     private float direction = 0f;
     [SerializeField] private float move_speed = 7f;
@@ -13,7 +17,10 @@ public class Movement : MonoBehaviour
     //private PlayerInput _playerInput;
     private int _walkBoolHash = Animator.StringToHash("Walking");
     private Animator _animator;
-    private float _defaultLocalXScale;
+    private float _defaultYRotation;
+    private PlayerInput _playerInput;
+    [SerializeField] private ProjectileBehaviour Projectile_Prefab;
+    [SerializeField] private Transform Launch_Offset;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -21,30 +28,48 @@ public class Movement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         //_playerInput = GetComponent<PlayerInput>();
         _animator = GetComponent<Animator>();
-        _defaultLocalXScale = transform.localScale.x;
+        _renderer = GetComponent<SpriteRenderer>();
     }
 
     private void OnJump()
     {
+        if(!isActive) return;
         if (nb_double_jump <= 0) return;
         nb_double_jump = nb_double_jump - 1;
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jump_power);
     }
 
-    private void OnMove(InputValue value)
+    public void SetState(bool state)
     {
-        direction = value.Get<Vector2>().x;
-        _animator.SetBool(_walkBoolHash, direction != 0);
-        float newLocalXScale = transform.localScale.x;
-        if (direction < 0) newLocalXScale = - _defaultLocalXScale;
-        if (direction > 0) newLocalXScale = _defaultLocalXScale;
-        transform.localScale = new Vector3(newLocalXScale, transform.localScale.y, transform.localScale.z);
+        isActive = state;
+        childRenderer.enabled = state;
+        if (!state)
+        {
+            _animator.SetBool(_walkBoolHash, false);
+        }
+        else
+        {
+            Reset_Double_Jump_Switch();
+        }
     }
 
-    private void OnPrevious()
+    private void OnMove(InputValue value)
     {
-        Debug.Log("here");
+        if(!isActive) return;
+        direction = value.Get<Vector2>().x;
+        _animator.SetBool(_walkBoolHash, direction != 0);
+        float newYRotation = transform.rotation.eulerAngles.y;
+        if (direction < 0) newYRotation = - 180;
+        if (direction > 0) newYRotation = 0;
+        transform.rotation = Quaternion.Euler(new Vector3(0f, newYRotation, 0f));
     }
+
+    private void OnAttack()
+    {
+        if (!isActive) return;
+        Instantiate(Projectile_Prefab, Launch_Offset.position, transform.rotation);
+    }
+
     public void Reset_Double_Jump_Ground()
     {
         nb_double_jump = 2;
@@ -69,7 +94,14 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        rb.linearVelocity = new Vector2(direction * move_speed, rb.linearVelocity.y);
+        if(isActive)
+        {
+            rb.linearVelocity = new Vector2(direction * move_speed, rb.linearVelocity.y);
+        }
+        else
+        {
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+        }
         //direction = Input.GetAxisRaw("Horizontal");
         //rb.linearVelocity = new Vector2(direction * move_speed, rb.linearVelocity.y);
 
