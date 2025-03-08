@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class Movement : MonoBehaviour
 {
+    [SerializeField] private SpriteRenderer childRenderer;
+    private SpriteRenderer _renderer;
     public bool isActive = false;
     private Rigidbody2D rb;
     private float direction = 0f;
@@ -25,6 +28,7 @@ public class Movement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         //_playerInput = GetComponent<PlayerInput>();
         _animator = GetComponent<Animator>();
+        _renderer = GetComponent<SpriteRenderer>();
     }
 
     private void OnJump()
@@ -33,6 +37,22 @@ public class Movement : MonoBehaviour
         if (nb_double_jump <= 0) return;
         nb_double_jump = nb_double_jump - 1;
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jump_power);
+    }
+
+    public void SetState(bool state)
+    {
+        isActive = state;
+        childRenderer.enabled = !state;
+        _renderer.enabled = state;
+        if (!state)
+        {
+            _animator.SetBool(_walkBoolHash, false);
+            direction = 0;
+        }
+        else
+        {
+            Reset_Double_Jump_Switch();
+        }
     }
 
     private void OnMove(InputValue value)
@@ -48,7 +68,8 @@ public class Movement : MonoBehaviour
 
     private void OnAttack()
     {
-        Instantiate(Projectile_Prefab, transform.position + Launch_Offset.position, transform.rotation);
+        if (!isActive) return;
+        Instantiate(Projectile_Prefab, Launch_Offset.position, transform.rotation);
     }
 
     public void Reset_Double_Jump_Ground()
@@ -75,7 +96,14 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        rb.linearVelocity = new Vector2(direction * move_speed, rb.linearVelocity.y);
+        if(isActive)
+        {
+            rb.linearVelocity = new Vector2(direction * move_speed, rb.linearVelocity.y);
+        }
+        else
+        {
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+        }
         //direction = Input.GetAxisRaw("Horizontal");
         //rb.linearVelocity = new Vector2(direction * move_speed, rb.linearVelocity.y);
 

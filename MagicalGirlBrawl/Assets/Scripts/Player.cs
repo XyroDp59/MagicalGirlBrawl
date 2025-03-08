@@ -1,16 +1,24 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Switch : MonoBehaviour
+public class Player : MonoBehaviour
 {
     [SerializeField] private int team;
     [SerializeField] private List<Movement> Available;
     private int _current;
 
-    public bool Empty(List<Movement> l)
+    public void RemoveMovement(Movement m)
     {
-        return l.Count == 0;
+        if(Available.Count > 0)
+        {
+            Available.Remove(m);
+        }
+        else
+        {
+            GameController.instance.RestartGame();
+        }
     }
 
     public void OnPrevious()
@@ -22,7 +30,7 @@ public class Switch : MonoBehaviour
         int i = 0;
         foreach (var player in Available)
         {
-            player.isActive = i == _current;
+            player.SetState(i == _current);
             i += 1;
         }
     }
@@ -36,7 +44,7 @@ public class Switch : MonoBehaviour
         int i = 0;
         foreach (var player in Available)
         {
-            player.isActive = i == _current;
+            player.SetState(i == _current);
             i += 1;
         }
     }
@@ -44,13 +52,7 @@ public class Switch : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Available[0].isActive = false;
-        Available[1].isActive = false;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Available[0].SetState(false);
+        Available[1].SetState(false);
     }
 }
