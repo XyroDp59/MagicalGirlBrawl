@@ -26,9 +26,9 @@ public class Movement : MonoBehaviour
     [SerializeField] private Area_of_Attack Smash_Prefab;
     [SerializeField] private Transform Launch_Offset;
     [SerializeField] private GameObject grabber;
+    [SerializeField] private ChargingParticle chargingSmashParticles;
     private float charged_time = 0f;
     private bool charging = false;
-    
     private GrabState _grabState;
 
     private enum GrabState
@@ -120,6 +120,7 @@ public class Movement : MonoBehaviour
         Area_of_Attack a = Instantiate(Smash_Prefab, Launch_Offset.position, transform.rotation);
         a.charged_time = charged_time;
         charged_time = 0f;
+
     }
     public void OnSmash(InputAction.CallbackContext context)
     {
@@ -153,6 +154,7 @@ public class Movement : MonoBehaviour
         if (charging)
         {
             charged_time += Time.deltaTime;
+            chargingSmashParticles.Evaluate(charged_time);
             if ((charged_time > 3)/*||()*/)
             {
                 Smash();
