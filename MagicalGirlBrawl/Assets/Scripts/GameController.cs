@@ -13,6 +13,8 @@ public class GameController : MonoBehaviour
     [SerializeField] List<string> decompteString = new List<string>();
 
     public List<Player> players = new List<Player>();
+    private List<Player> playersReady = new List<Player>();
+
 
     AudioSource source;
     WaitForSeconds second = new WaitForSeconds(1);
@@ -25,11 +27,10 @@ public class GameController : MonoBehaviour
         instance = this;
     }
 
-    private int playerReady = 0;
-    public void PlayerIsReady()
+    public void PlayerIsReady(Player p)
     {
-        playerReady++;
-        if (playerReady == 2)
+        if(!playersReady.Contains(p)) playersReady.Add(p);
+        if (playersReady.Count == 2)
         {
             StartCoroutine(StartFight());
         }
