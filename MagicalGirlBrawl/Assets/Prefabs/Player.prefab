@@ -210,6 +210,7 @@ MonoBehaviour:
   jump_power: 17
   nb_double_jump: 2
   Projectile_Prefab: {fileID: 3224241278047837562, guid: 65845e06ec87e8242a0281be63621785, type: 3}
+  Smash_Prefab: {fileID: 6055333660405119269, guid: 80f6f9c8dceff4e4091ab4202ccb81e0, type: 3}
   Launch_Offset: {fileID: 4731994439064487374}
   grabber: {fileID: 1400296057141086778}
 --- !u!61 &6374324094476013128
@@ -425,6 +426,18 @@ PrefabInstance:
     - target: {fileID: 1445657580950671937, guid: 58c9300ecb96ec4499672f50ab610fab, type: 3}
       propertyPath: m_Name
       value: Launch_Offset
+      objectReference: {fileID: 0}
+    - target: {fileID: 6244256268358964168, guid: 58c9300ecb96ec4499672f50ab610fab, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6244256268358964168, guid: 58c9300ecb96ec4499672f50ab610fab, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6244256268358964168, guid: 58c9300ecb96ec4499672f50ab610fab, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6244256268358964168, guid: 58c9300ecb96ec4499672f50ab610fab, type: 3}
       propertyPath: m_LocalPosition.x

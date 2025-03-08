@@ -87,9 +87,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Grab",
+                    "name": "Smash",
                     "type": "Button",
-                    "id": "139fded0-4b16-44ed-bd8b-a57d2d263cf6",
+                    "id": "18377b78-02c3-4549-86a8-0a0ae7c1523d",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -517,23 +517,23 @@
                 },
                 {
                     "name": "",
-                    "id": "c8167576-a3c1-4e8a-be7e-2b48bf5aaf63",
-                    "path": "<Keyboard>/e",
+                    "id": "72386197-cc4b-4fa8-b30a-b41d7d8c0773",
+                    "path": "<Keyboard>/leftShift",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Grab",
+                    "groups": "",
+                    "action": "Smash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "e165ad3e-20c4-41fe-899c-c719a4930633",
-                    "path": "<HID::Bensussen Deutsch & Associates,Inc.(BDA) NSW Wired controller>/button6",
+                    "id": "ed5ad63f-4011-41c8-b780-23a3a83e4141",
+                    "path": "<HID::Bensussen Deutsch & Associates,Inc.(BDA) NSW Wired controller>/button3",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Joystick;Gamepad",
-                    "action": "Grab",
+                    "groups": "",
+                    "action": "Smash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -21,8 +21,11 @@ public class Movement : MonoBehaviour
     private float _defaultYRotation;
     private PlayerInput _playerInput;
     [SerializeField] private ProjectileBehaviour Projectile_Prefab;
+    [SerializeField] private Area_of_Attack Smash_Prefab;
     [SerializeField] private Transform Launch_Offset;
     [SerializeField] private GameObject grabber;
+    private float charged_time = 0f;
+    private bool charging = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -93,6 +96,18 @@ public class Movement : MonoBehaviour
         if (!isActive) return;
         _animator.SetTrigger(_castTriggerHash);
         Instantiate(Projectile_Prefab, Launch_Offset.position, transform.rotation);
+        ProjectileBehaviour p = Instantiate(Projectile_Prefab, Launch_Offset.position, transform.rotation);
+    }
+    private void Smash()
+    {
+        if (!isActive) return;
+        Area_of_Attack a = Instantiate(Smash_Prefab, Launch_Offset.position, transform.rotation);
+        a.charged_time = charged_time;
+        charged_time = 0f;
+    }
+    private void OnSmash()
+    {
+        charging = true;
     }
 
     public void Reset_Double_Jump_Ground()
@@ -119,6 +134,15 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (charging)
+        {
+            charged_time += Time.deltaTime;
+            if ((charged_time > 3)/*||()*/)
+            {
+                Smash();
+                charging = false;
+            }
+        }
         if(isActive)
         {
             rb.linearVelocity = new Vector2(direction * move_speed, rb.linearVelocity.y);
