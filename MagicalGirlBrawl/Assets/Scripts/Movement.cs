@@ -6,8 +6,10 @@ public class Movement : MonoBehaviour
 {
     private Rigidbody2D rb;
     private float direction = 0f; 
-    [SerializeField] private float moveSpeed = 7f;
-    [SerializeField] private float jumppower = 17f;
+    [SerializeField] private float move_speed = 7f;
+    [SerializeField] private float jump_power = 17f;
+    [SerializeField] public int nb_double_jump = 2;
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -15,15 +17,36 @@ public class Movement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
+    public void Reset_Double_Jump_Ground()
+    {
+        nb_double_jump = 2;
+    }
+    public void Reset_Double_Jump_Switch()
+    {
+        if (nb_double_jump == 0)
+        {
+            nb_double_jump = 1;
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
         direction = Input.GetAxisRaw("Horizontal");
-        rb.linearVelocity = new Vector2(direction * moveSpeed, rb.linearVelocity.y);
-    
-        if (Input.GetButtonDown("Jump"))
+        rb.linearVelocity = new Vector2(direction * move_speed, rb.linearVelocity.y);
+
+        if ((Input.GetButtonDown("Jump"))&&(nb_double_jump > 0))
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumppower);
+            nb_double_jump = nb_double_jump - 1;
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jump_power);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Ground"))
+        {
+            Reset_Double_Jump_Ground();
         }
     }
 }
