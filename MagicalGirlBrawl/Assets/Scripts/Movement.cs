@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class Movement : MonoBehaviour
 {
+    [SerializeField] private SpriteRenderer childRenderer;
+    private SpriteRenderer _renderer;
     public bool isActive = false;
     private Rigidbody2D rb;
     private float direction = 0f;
@@ -25,6 +28,7 @@ public class Movement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         //_playerInput = GetComponent<PlayerInput>();
         _animator = GetComponent<Animator>();
+        _renderer = GetComponent<SpriteRenderer>();
     }
 
     private void OnJump()
@@ -38,9 +42,14 @@ public class Movement : MonoBehaviour
     public void SetState(bool state)
     {
         isActive = state;
+        childRenderer.enabled = state;
         if (!state)
         {
             _animator.SetBool(_walkBoolHash, false);
+        }
+        else
+        {
+            Reset_Double_Jump_Switch();
         }
     }
 
