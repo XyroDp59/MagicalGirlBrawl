@@ -42,10 +42,12 @@ public class Movement : MonoBehaviour
     public void SetState(bool state)
     {
         isActive = state;
-        childRenderer.enabled = state;
+        childRenderer.enabled = !state;
+        _renderer.enabled = state;
         if (!state)
         {
             _animator.SetBool(_walkBoolHash, false);
+            direction = 0;
         }
         else
         {
