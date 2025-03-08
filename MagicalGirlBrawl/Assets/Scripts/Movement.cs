@@ -16,11 +16,13 @@ public class Movement : MonoBehaviour
     [SerializeField] public int nb_double_jump = 2;
     //private PlayerInput _playerInput;
     private int _walkBoolHash = Animator.StringToHash("Walking");
+    private int _castTriggerHash = Animator.StringToHash("Cast");
     private Animator _animator;
     private float _defaultYRotation;
     private PlayerInput _playerInput;
     [SerializeField] private ProjectileBehaviour Projectile_Prefab;
     [SerializeField] private Transform Launch_Offset;
+    [SerializeField] private GameObject grabber;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -55,6 +57,26 @@ public class Movement : MonoBehaviour
         }
     }
 
+    private void OnGrab()
+    {
+        StartCoroutine(TryGrab());
+    }
+
+    private IEnumerator TryGrab()
+    {
+        grabber.SetActive(true);
+        yield return new WaitForSeconds(0.3f);
+        grabber.SetActive(false);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == 6)
+        {
+            Debug.Log("gwabbed owo");
+        }
+    }
+
     private void OnMove(InputValue value)
     {
         if(!isActive) return;
@@ -69,6 +91,7 @@ public class Movement : MonoBehaviour
     private void OnAttack()
     {
         if (!isActive) return;
+        _animator.SetTrigger(_castTriggerHash);
         Instantiate(Projectile_Prefab, Launch_Offset.position, transform.rotation);
     }
 
