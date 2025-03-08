@@ -14,6 +14,9 @@ public class Movement : MonoBehaviour
     private int _walkBoolHash = Animator.StringToHash("Walking");
     private Animator _animator;
     private float _defaultLocalXScale;
+    private PlayerInput _playerInput;
+    [SerializeField] private ProjectileBehaviour Projectile_Prefab;
+    [SerializeField] private Transform Launch_Offset;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -41,10 +44,11 @@ public class Movement : MonoBehaviour
         transform.localScale = new Vector3(newLocalXScale, transform.localScale.y, transform.localScale.z);
     }
 
-    private void OnPrevious()
+    private void OnAttack()
     {
-        Debug.Log("here");
+        Instantiate(Projectile_Prefab, transform.position + Launch_Offset.position, transform.rotation);
     }
+
     public void Reset_Double_Jump_Ground()
     {
         nb_double_jump = 2;
