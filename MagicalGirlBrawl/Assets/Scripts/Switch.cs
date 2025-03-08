@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Switch : MonoBehaviour
 {
+    [SerializeField] private int team;
     [SerializeField] private List<Movement> Available;
     private int _current;
 
