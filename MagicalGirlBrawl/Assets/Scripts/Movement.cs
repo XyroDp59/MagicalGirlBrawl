@@ -14,7 +14,7 @@ public class Movement : MonoBehaviour
     //private PlayerInput _playerInput;
     private int _walkBoolHash = Animator.StringToHash("Walking");
     private Animator _animator;
-    private float _defaultLocalXScale;
+    private float _defaultYRotation;
     private PlayerInput _playerInput;
     [SerializeField] private ProjectileBehaviour Projectile_Prefab;
     [SerializeField] private Transform Launch_Offset;
@@ -25,7 +25,6 @@ public class Movement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         //_playerInput = GetComponent<PlayerInput>();
         _animator = GetComponent<Animator>();
-        _defaultLocalXScale = transform.localScale.x;
     }
 
     private void OnJump()
@@ -41,10 +40,10 @@ public class Movement : MonoBehaviour
         if(!isActive) return;
         direction = value.Get<Vector2>().x;
         _animator.SetBool(_walkBoolHash, direction != 0);
-        float newLocalXScale = transform.localScale.x;
-        if (direction < 0) newLocalXScale = - _defaultLocalXScale;
-        if (direction > 0) newLocalXScale = _defaultLocalXScale;
-        transform.localScale = new Vector3(newLocalXScale, transform.localScale.y, transform.localScale.z);
+        float newYRotation = transform.rotation.eulerAngles.y;
+        if (direction < 0) newYRotation = - 180;
+        if (direction > 0) newYRotation = 0;
+        transform.rotation = Quaternion.Euler(new Vector3(0f, newYRotation, 0f));
     }
 
     private void OnAttack()
