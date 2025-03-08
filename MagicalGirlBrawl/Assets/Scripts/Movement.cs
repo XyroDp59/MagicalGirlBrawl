@@ -6,7 +6,8 @@ public class Movement : MonoBehaviour
 {
     private Rigidbody2D rb;
     private float direction = 0f; 
-    private float moveSpeed = 7f;
+    [SerializeField] private float moveSpeed = 7f;
+    [SerializeField] private float jumppower = 17f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -19,5 +20,10 @@ public class Movement : MonoBehaviour
     {
         direction = Input.GetAxisRaw("Horizontal");
         rb.linearVelocity = new Vector2(direction * moveSpeed, rb.linearVelocity.y);
+    
+        if (Input.GetButtonDown("Jump"))
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumppower);
+        }
     }
 }
