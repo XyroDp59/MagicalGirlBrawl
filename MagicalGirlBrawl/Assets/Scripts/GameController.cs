@@ -8,15 +8,16 @@ public class GameController : MonoBehaviour
 {
     public static GameController instance;
 
-    [SerializeField] Color colorP1 = Color.cyan;
-    [SerializeField] Color colorP2 = Color.red;
+    [SerializeField] public Color[] colors = { Color.cyan, Color.red };
     [SerializeField] List<AudioClip> decompteClip = new List<AudioClip>();
     [SerializeField] List<string> decompteString = new List<string>();
 
+    public List<Player> players = new List<Player>();
+
     AudioSource source;
     WaitForSeconds second = new WaitForSeconds(1);
-    [SerializeField] GameObject restroom;
-    TextMeshProUGUI startAnnouncementText;
+    public GameObject restroom;
+    [SerializeField] TextMeshProUGUI startAnnouncementText;
 
 
     private void Awake()
@@ -43,7 +44,10 @@ public class GameController : MonoBehaviour
             //source.Play();
             yield return second;
         }
+        startAnnouncementText.transform.parent.gameObject.SetActive(false);
+        yield return second;
         restroom.SetActive(false);
+        
     }
 
     public void RestartGame()

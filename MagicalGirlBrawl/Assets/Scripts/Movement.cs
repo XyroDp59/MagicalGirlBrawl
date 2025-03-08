@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 
 public class Movement : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer childRenderer;
+    [SerializeField] public SpriteRenderer childRenderer;
     private SpriteRenderer _renderer;
     private HealthSystem _healthSystem;
     public bool isActive = false;

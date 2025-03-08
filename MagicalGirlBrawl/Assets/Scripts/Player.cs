@@ -5,9 +5,29 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    private static int playerCount = -1;
+    private int playerIndex;
     [SerializeField] private int team;
     [SerializeField] private List<Movement> Available;
     private int _current;
+
+    private Color playerColor;
+
+    private void Awake()
+    {
+        playerCount++;
+        playerIndex = playerCount;
+        Debug.Log(playerIndex);
+        GameController.instance.players.Add(this);
+        playerColor = GameController.instance.colors[playerIndex];
+
+        foreach (var movement in Available)
+        {
+            movement.childRenderer.color = playerColor;
+            movement.GetComponent<HealthSystem>().SetColor(playerColor);
+        }
+        transform.position = GameController.instance.restroom.transform.GetChild(playerIndex).position;
+    }
 
     public void RemoveMovement(Movement m)
     {
