@@ -52,6 +52,14 @@ public class Movement : MonoBehaviour
             return;
         }
 
+        if (grabState == GrabState.Grabber && !isActive)
+        {
+            grabber.SetActive(false);
+            _grabbed.grabState = GrabState.Normal;
+            _canThrow = false;
+            grabState = GrabState.Normal;
+        }
+
         if (grabState == GrabState.Thrown)
         {
             return;
