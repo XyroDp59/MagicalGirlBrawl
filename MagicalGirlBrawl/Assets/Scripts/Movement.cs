@@ -54,14 +54,16 @@ public class Movement : MonoBehaviour
             return;
         }
 
-        if (_charging)
+        if (_charging && isActive)
         {
             _chargedTime += Time.deltaTime;
+            chargingSmashParticles.gameObject.SetActive(true);
             chargingSmashParticles.Evaluate(_chargedTime);
-            if ((_chargedTime > 3)/*||()*/)
+            if ((_chargedTime > 3) || (_cancelSmash))
             {
                 Smash();
                 _charging = false;
+                _cancelSmash = false;
             }
         }
         if (isActive)
@@ -95,7 +97,7 @@ public class Movement : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
 
-        if (!isActive) return;
+        if (!isActive || _charging) return;
 
         _direction = context.ReadValue<Vector2>().x;
 
@@ -240,19 +242,29 @@ public class Movement : MonoBehaviour
     [SerializeField] private Area_of_Attack Smash_Prefab;
     [SerializeField] private ChargingParticle chargingSmashParticles;
 
+    private bool _cancelSmash;
+
+    public void OnSmash(InputAction.CallbackContext context)
+    {
+        if (grabState != GrabState.Normal) return;
+        _charging = true;
+    }
+
+    public void OnSmashRelease(InputAction.CallbackContext context)
+    {
+        if (grabState != GrabState.Normal) return;
+        _cancelSmash = true;
+    }
 
     private void Smash()
     {
         if (!isActive) return;
         Area_of_Attack a = Instantiate(Smash_Prefab, Launch_Offset.position, transform.rotation);
         a.charged_time = _chargedTime;
+        chargingSmashParticles.gameObject.SetActive(false);
         _chargedTime = 0f;
     }
-    public void OnSmash(InputAction.CallbackContext context)
-    {
-        if (grabState != GrabState.Normal) return;
-        _charging = true;
-    }
+
 
     #endregion
 

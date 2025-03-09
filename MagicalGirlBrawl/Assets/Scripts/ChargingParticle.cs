@@ -14,11 +14,10 @@ public class ChargingParticle : MonoBehaviour
 
     public void Evaluate(float t)
     {
+
         transform.localScale = Vector3.one * sizeCurve.Evaluate(t);
+        if(_particleSystem == null) _particleSystem = GetComponent<ParticleSystem>();
         var p = _particleSystem.main;
         p.startColor = gradient.Evaluate(t);
     }
-
-
-
 }
