@@ -379,8 +379,8 @@ public class Movement : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent<BlastZone>(out BlastZone blastZone))
         {
-            _healthSystem.addHealth(blastZone.damageDealt);
-            StartCoroutine(GetThrown(0, false, blastZone.stunDuration));
+            int newHealth = _healthSystem.addHealth(blastZone.damageDealt);
+            if(newHealth > 0) StartCoroutine(GetThrown(0, false, blastZone.stunDuration));
             nb_double_jump = 1;
         }
         
