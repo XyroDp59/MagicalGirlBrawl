@@ -10,10 +10,13 @@ public class HealthSystem : MonoBehaviour
     [SerializeField] private RectTransform healthBar;
     [SerializeField] private Image fillImage;
     [SerializeField] private AnimationCurve hitCurve;
+    [SerializeField] private SpriteRenderer totemRenderer;
 
     private int currentHealth;
     private SpriteRenderer _spriteRenderer;
     public UnityEvent<Movement> TotemDeath;
+    private Color _defaultRendererColorColor;
+    private Color _defaultTotemColor;
     Player player;
     
     // --- KAILY Audio ---------
@@ -28,6 +31,8 @@ public class HealthSystem : MonoBehaviour
         
         _hitInstance = FMODUnity.RuntimeManager.CreateInstance("event:/SFX/Hit");
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _defaultRendererColorColor = _spriteRenderer.color;
+        _defaultTotemColor = totemRenderer.color;
     }
 
     public void SetColor(Color c)
@@ -53,11 +58,11 @@ public class HealthSystem : MonoBehaviour
     {
         var length = hitCurve.keys[^1].time;
         var timer = 0f;
-        Color defaultColor = _spriteRenderer.color;
         while (timer < length)
         {
             timer += Time.deltaTime;
-            _spriteRenderer.color = Color.Lerp(defaultColor, Color.white, hitCurve.Evaluate(timer / length)); 
+            _spriteRenderer.color = Color.Lerp(_defaultRendererColorColor, Color.black, hitCurve.Evaluate(timer / length));
+            totemRenderer.color = Color.Lerp(_defaultTotemColor, Color.black, hitCurve.Evaluate(timer / length));
             yield return null;
         }
     }
