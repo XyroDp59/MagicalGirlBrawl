@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7218405247970623402
 Transform:
   m_ObjectHideFlags: 0
@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1400296057141086778}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.42, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -39,7 +39,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1400296057141086778}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -66,7 +66,7 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.94, y: -0.73}
+  m_Offset: {x: 0.94, y: -1.9}
   m_Radius: 0.5
 --- !u!1 &6610506277347798394
 GameObject:
@@ -90,7 +90,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8166813545408776777
 Transform:
   m_ObjectHideFlags: 0
@@ -212,6 +212,7 @@ MonoBehaviour:
   isActive: 0
   grabber: {fileID: 1400296057141086778}
   throwStrength: {x: 13, y: 13}
+  grabRange: 5
   grabState: 0
   Projectile_Prefab: {fileID: 3224241278047837562, guid: 65845e06ec87e8242a0281be63621785, type: 3}
   Launch_Offset: {fileID: 4731994439064487374}
