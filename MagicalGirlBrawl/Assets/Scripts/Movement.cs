@@ -31,7 +31,17 @@ public class Movement : MonoBehaviour
     private float _defaultYRotation;
     private float _direction = 0f;
     private float _chargedTime = 0f;
-   
+    
+    
+    // ------------ KAILY Audio -----------------
+    private FMOD.Studio.EventInstance _jumpInstance;
+    private FMOD.Studio.EventInstance _sparkleInstance;
+    private FMOD.Studio.EventInstance _grabInstance;
+    private FMOD.Studio.EventInstance _throwInstance;
+    private FMOD.Studio.EventInstance _maxedInstance;
+    private FMOD.Studio.EventInstance _powerfullInstance;
+    
+    private bool _maxed = false;
     
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -43,6 +53,14 @@ public class Movement : MonoBehaviour
         _renderer = GetComponent<SpriteRenderer>();
         grabState = GrabState.Normal;
         _healthSystem = GetComponent<HealthSystem>();
+        
+        // ---------- Kaily Audio -------------
+        _jumpInstance = FMODUnity.RuntimeManager.CreateInstance("event:/SFX/Jump");
+        _sparkleInstance = FMODUnity.RuntimeManager.CreateInstance("event:/SFX/Magic Sparkle");
+        _grabInstance = FMODUnity.RuntimeManager.CreateInstance("event:/SFX/grab");
+        _throwInstance = FMODUnity.RuntimeManager.CreateInstance("event:/SFX/Slash");
+        _maxedInstance = FMODUnity.RuntimeManager.CreateInstance("event:/SFX/Magic OVERDRIVE HAYAYAYAYA");
+        _powerfullInstance = FMODUnity.RuntimeManager.CreateInstance("event:/SFX/Powerful Magic");
     }
 
     void Update()
@@ -75,10 +93,17 @@ public class Movement : MonoBehaviour
             _rb.linearVelocity = new Vector2(0, _rb.linearVelocity.y);
             if ((_chargedTime > 3) || (_cancelSmash))
             {
+                _maxed = false; // FMOD SFX
                 _animator.SetTrigger("SmashRelease");
                 Smash();
                 _charging = false;
                 _cancelSmash = false;
+            }
+
+            if (_chargedTime > 1 && !_maxed)
+            {
+                _maxed = true;
+                _maxedInstance.start(); // FMOD SFX
             }
         }
         if (isActive)
@@ -159,6 +184,8 @@ public class Movement : MonoBehaviour
         if (nb_double_jump <= 0) return;
         nb_double_jump = nb_double_jump - 1;
         _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, jump_power);
+
+        _jumpInstance.start();
     }
 
     public void Reset_Double_Jump_Ground()
@@ -204,6 +231,8 @@ public class Movement : MonoBehaviour
         if(!context.started || grabState != GrabState.Normal) return;
         if(!isActive) return;
         TryGrab();
+        
+        _grabInstance.start();
     }
     
     private void TryGrab()
@@ -250,6 +279,8 @@ public class Movement : MonoBehaviour
 
     private IEnumerator Throw(float direction)
     {
+        _throwInstance.start();
+        
         _animator.SetTrigger(_throwTrigHash);
         yield return new WaitForSeconds(0.2f);
         grabber.SetActive(false);
@@ -272,6 +303,8 @@ public class Movement : MonoBehaviour
         if (!isActive) return;
         _animator.SetTrigger(_castTriggerHash);
         Instantiate(Projectile_Prefab, Launch_Offset.position, transform.rotation);
+        
+        _sparkleInstance.start();
     }
 
     #endregion
@@ -298,6 +331,10 @@ public class Movement : MonoBehaviour
     private void Smash()
     {
         if (!isActive) return;
+        
+        _maxedInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);  // FMOD SFX
+        _powerfullInstance.start(); // FMOD SFX
+        
         Area_of_Attack a = Instantiate(Smash_Prefab, Launch_Offset.position, transform.rotation);
         a.charged_time = _chargedTime;
         chargingSmashParticles.gameObject.SetActive(false);
