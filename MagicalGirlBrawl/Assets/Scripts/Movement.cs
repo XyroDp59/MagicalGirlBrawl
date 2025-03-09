@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -26,8 +24,10 @@ public class Movement : MonoBehaviour
     private bool _canThrow;
     public bool isActive = false;
 
-    private int _walkBoolHash = Animator.StringToHash("Walking");
-    private int _castTriggerHash = Animator.StringToHash("Cast");
+    private readonly int _walkBoolHash = Animator.StringToHash("Walking");
+    private readonly int _castTriggerHash = Animator.StringToHash("Cast");
+    private readonly int _grabTrigHash = Animator.StringToHash("Grab");
+    private readonly int _throwTrigHash = Animator.StringToHash("Throw");
     
     private float _defaultYRotation;
     private float _direction = 0f;
@@ -36,9 +36,9 @@ public class Movement : MonoBehaviour
     
     [SerializeField] private ChargingParticle chargingSmashParticles;
 
-    private GrabState _grabState;
+    public GrabState grabState;
 
-    private enum GrabState
+    public enum GrabState
     {
         Normal,
         Grabbed,
@@ -53,13 +53,13 @@ public class Movement : MonoBehaviour
         //_playerInput = GetComponent<PlayerInput>();
         _animator = GetComponent<Animator>();
         _renderer = GetComponent<SpriteRenderer>();
-        _grabState = GrabState.Normal;
+        grabState = GrabState.Normal;
         _healthSystem = GetComponent<HealthSystem>();
     }
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (!context.started || _grabState != GrabState.Normal) return;
+        if (!context.started || grabState != GrabState.Normal) return;
         if(!isActive) return;
         if (nb_double_jump <= 0) return;
         nb_double_jump = nb_double_jump - 1;
@@ -68,7 +68,7 @@ public class Movement : MonoBehaviour
 
     public void OnGrab(InputAction.CallbackContext context)
     {
-        if(!context.started || _grabState != GrabState.Normal) return;
+        if(!context.started || grabState != GrabState.Normal) return;
         if(!isActive) return;
         StartCoroutine(TryGrab());
     }
@@ -89,21 +89,19 @@ public class Movement : MonoBehaviour
         }
     }
 
-    private void OnGrab()
-    {
-        StartCoroutine(TryGrab());
-    }
-
     private IEnumerator TryGrab()
     {
         grabber.SetActive(true);
+        _animator.SetTrigger(_grabTrigHash);
         yield return new WaitForSeconds(0.3f);
         grabber.SetActive(false);
+        if(grabState != GrabState.Grabber)
+            _animator.SetTrigger(_throwTrigHash);
     }
 
     private void Grab(Movement grabbed)
     {
-        _grabState = GrabState.Grabber;
+        grabState = GrabState.Grabber;
         grabber.SetActive(false);
         _grabbed = grabbed;
         StartCoroutine(ThrowDelay());
@@ -120,24 +118,26 @@ public class Movement : MonoBehaviour
         if (collision.gameObject.layer == 6)
         {
             collision.gameObject.GetComponentInParent<Movement>().Grab(this);
-            _grabState = GrabState.Grabbed;
+            grabState = GrabState.Grabbed;
         }
     }
 
     public IEnumerator GetThrown(float direction)
     {
-        _grabState = GrabState.Thrown;
+        grabState = GrabState.Thrown;
         _rb.linearVelocity = new Vector2(direction > 0 ? throwStrength.x : -throwStrength.x, throwStrength.y);
         yield return new WaitForSeconds(1f);
-        _grabState = GrabState.Normal;
+        grabState = GrabState.Normal;
     }
 
     private IEnumerator Throw(float direction)
     {
+        _animator.SetTrigger(_throwTrigHash);
+        yield return new WaitForSeconds(0.2f);
         StartCoroutine(_grabbed.GetThrown(direction));
         yield return new WaitForSeconds(0.3f);
         _canThrow = false;
-        _grabState = GrabState.Normal;
+        grabState = GrabState.Normal;
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -147,12 +147,12 @@ public class Movement : MonoBehaviour
         
         _direction = context.ReadValue<Vector2>().x;
 
-        if (_grabState == GrabState.Grabber && _direction != 0)
+        if (grabState == GrabState.Grabber && _direction != 0 && _canThrow)
         {
             StartCoroutine(Throw(_direction));
         }
 
-        if (_grabState != GrabState.Normal) return;
+        if (grabState != GrabState.Normal) return;
         
         _animator.SetBool(_walkBoolHash, _direction != 0);
         float newYRotation = transform.rotation.eulerAngles.y;
@@ -163,7 +163,7 @@ public class Movement : MonoBehaviour
 
     public void OnAttack(InputAction.CallbackContext context)
     {
-        if (!context.started || _grabState != GrabState.Normal) return;
+        if (!context.started || grabState != GrabState.Normal) return;
         if (!isActive) return;
         _animator.SetTrigger(_castTriggerHash);
         Instantiate(Projectile_Prefab, Launch_Offset.position, transform.rotation);
@@ -178,7 +178,7 @@ public class Movement : MonoBehaviour
     }
     public void OnSmash(InputAction.CallbackContext context)
     {
-        if (_grabState != GrabState.Normal) return;
+        if (grabState != GrabState.Normal) return;
         _charging = true;
     }
 
@@ -206,12 +206,12 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_grabState == GrabState.Grabbed)
+        if (grabState == GrabState.Grabbed)
         {
             return;
         }
 
-        if (_grabState == GrabState.Thrown)
+        if (grabState == GrabState.Thrown)
         {
             return;
         }
