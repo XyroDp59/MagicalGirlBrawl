@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    private static int playerCount = -1;
+    public static int playerCount = -1;
     private int playerIndex;
     [SerializeField] private int team;
     [SerializeField] private List<Movement> Available;

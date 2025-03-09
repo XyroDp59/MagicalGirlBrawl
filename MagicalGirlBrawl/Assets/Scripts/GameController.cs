@@ -32,6 +32,8 @@ public class GameController : MonoBehaviour
     private bool _gameEnded = false;
 
     public List<FMOD.Studio.EventInstance> _decompteInstances;
+
+    [SerializeField] private TextMeshProUGUI endGameText;
     // --------------------
     
     private void Awake()
@@ -94,8 +96,18 @@ public class GameController : MonoBehaviour
         _music.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         _endMusic.start();
         
+        
         Time.timeScale = 0;
         finMenu.SetActive(true);
+
+        if (playerIndex == 0)
+        {
+            endGameText.text = "l'héroine du jour est : \nRed !";
+        }
+        else
+        {
+            endGameText.text = "L'héroine du jour est : \nBlue !";
+        }
     }
 
     public void OnPause()
@@ -122,12 +134,15 @@ public class GameController : MonoBehaviour
         _music.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         _waitMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         _endMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-        
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        Player.playerCount = -1;
+        SceneManager.LoadScene("Game");
     }
 
     public void MainMenu()
     {
+        Player.playerCount = -1;
+        
         _music.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         _waitMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         _endMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
