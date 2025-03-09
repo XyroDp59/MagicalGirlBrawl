@@ -15,6 +15,7 @@ public class Movement : MonoBehaviour
     private Rigidbody2D _rb;
     private Animator _animator;
     private Movement _grabbed;
+    public Transform grabbedTransform;
     
     private bool _charging;
     private bool _canThrow;
@@ -24,6 +25,7 @@ public class Movement : MonoBehaviour
     private readonly int _castTriggerHash = Animator.StringToHash("Cast");
     private readonly int _grabTrigHash = Animator.StringToHash("Grab");
     private readonly int _throwTrigHash = Animator.StringToHash("Throw");
+    private readonly int _missedGrabTrigHash = Animator.StringToHash("MissedGrab");
     
     private float _defaultYRotation;
     private float _direction = 0f;
@@ -46,6 +48,7 @@ public class Movement : MonoBehaviour
     {
         if (grabState == GrabState.Grabbed)
         {
+            _rb.AddForce(5*(grabbedTransform.position - transform.position), ForceMode2D.Force);
             return;
         }
 
@@ -106,7 +109,7 @@ public class Movement : MonoBehaviour
             StartCoroutine(Throw(_direction));
         }
 
-        if (grabState != GrabState.Normal) return;
+        if (grabState != GrabState.Normal && grabState != GrabState.Grabber) return;
 
         _animator.SetBool(_walkBoolHash, _direction != 0);
         float newYRotation = transform.rotation.eulerAngles.y;
@@ -169,19 +172,21 @@ public class Movement : MonoBehaviour
     {
         if(!context.started || grabState != GrabState.Normal) return;
         if(!isActive) return;
-        StartCoroutine(TryGrab());
+        TryGrab();
     }
     
-    private IEnumerator TryGrab()
+    private void TryGrab()
     {
-        yield return new WaitForSeconds(0.1f);
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right, grabRange);
-        Debug.DrawRay(transform.position, Vector2.right * grabRange, Color.red, 1f);
-        if (hit.transform.gameObject.layer == 8)
+        _animator.SetTrigger(_grabTrigHash);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, grabRange);
+        Debug.DrawRay(transform.position, transform.right * grabRange, Color.red, 1f);
+        
+        if(hit.transform && hit.transform.gameObject.layer == 8)
         {
             grabState = GrabState.Grabber;
             Movement grabbedMovement = hit.transform.GetComponent<Movement>();
             grabbedMovement.grabState = GrabState.Grabbed;
+            grabbedMovement.grabbedTransform = grabber.transform;
             _grabbed = grabbedMovement;
             grabber.SetActive(true);
             StartCoroutine(ThrowDelay());
@@ -189,7 +194,8 @@ public class Movement : MonoBehaviour
         else
         {
             grabState = GrabState.Normal;
-            _animator.SetTrigger(_grabTrigHash);
+            Debug.Log("here");
+            _animator.SetTrigger(_missedGrabTrigHash);
         }
     }
     #endregion
