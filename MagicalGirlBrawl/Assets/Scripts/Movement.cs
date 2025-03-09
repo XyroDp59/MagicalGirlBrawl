@@ -26,6 +26,7 @@ public class Movement : MonoBehaviour
     private readonly int _grabTrigHash = Animator.StringToHash("Grab");
     private readonly int _throwTrigHash = Animator.StringToHash("Throw");
     private readonly int _missedGrabTrigHash = Animator.StringToHash("MissedGrab");
+    private readonly int _switchTriggerHash = Animator.StringToHash("Switch");
     
     private float _defaultYRotation;
     private float _direction = 0f;
@@ -117,6 +118,25 @@ public class Movement : MonoBehaviour
         if (_direction > 0) newYRotation = 0;
         transform.rotation = Quaternion.Euler(new Vector3(0f, newYRotation, 0f));
     }
+
+    #endregion
+
+    #region Switch Animation
+
+    public void OnPrevious(InputAction.CallbackContext context)
+    {
+        if (!context.started || grabState != GrabState.Normal) return;
+        if (!isActive) return;
+        _animator.SetTrigger(_switchTriggerHash);
+    }
+
+    public void OnNext(InputAction.CallbackContext context)
+    {
+        if (!context.started || grabState != GrabState.Normal) return;
+        if (!isActive) return;
+        _animator.SetTrigger(_switchTriggerHash);
+    }
+
 
     #endregion
 
