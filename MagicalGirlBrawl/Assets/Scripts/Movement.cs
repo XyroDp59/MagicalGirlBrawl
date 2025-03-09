@@ -4,13 +4,9 @@ using UnityEngine.InputSystem;
 
 public class Movement : MonoBehaviour
 {
-    [SerializeField] private ProjectileBehaviour Projectile_Prefab;
-    [SerializeField] private Area_of_Attack Smash_Prefab;
-    [SerializeField] private Transform Launch_Offset;
-    [SerializeField] private GameObject grabber;
+    [Header("Movement")]
     [SerializeField] private float move_speed = 7f;
     [SerializeField] private float jump_power = 17f;
-    [SerializeField] private Vector2 throwStrength;
     [SerializeField] public int nb_double_jump = 2;
     
     public SpriteRenderer childRenderer;
@@ -34,17 +30,6 @@ public class Movement : MonoBehaviour
     private float _chargedTime = 0f;
    
     
-    [SerializeField] private ChargingParticle chargingSmashParticles;
-
-    public GrabState grabState;
-
-    public enum GrabState
-    {
-        Normal,
-        Grabbed,
-        Thrown,
-        Grabber
-    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -57,21 +42,39 @@ public class Movement : MonoBehaviour
         _healthSystem = GetComponent<HealthSystem>();
     }
 
-    public void OnJump(InputAction.CallbackContext context)
+    void Update()
     {
-        if (!context.started || grabState != GrabState.Normal) return;
-        if(!isActive) return;
-        if (nb_double_jump <= 0) return;
-        nb_double_jump = nb_double_jump - 1;
-        _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, jump_power);
+        if (grabState == GrabState.Grabbed)
+        {
+            return;
+        }
+
+        if (grabState == GrabState.Thrown)
+        {
+            return;
+        }
+
+        if (_charging)
+        {
+            _chargedTime += Time.deltaTime;
+            chargingSmashParticles.Evaluate(_chargedTime);
+            if ((_chargedTime > 3)/*||()*/)
+            {
+                Smash();
+                _charging = false;
+            }
+        }
+        if (isActive)
+        {
+            _rb.linearVelocity = new Vector2(_direction * move_speed, _rb.linearVelocity.y);
+        }
+        else
+        {
+            _rb.linearVelocity = new Vector2(0, _rb.linearVelocity.y);
+        }
     }
 
-    public void OnGrab(InputAction.CallbackContext context)
-    {
-        if(!context.started || grabState != GrabState.Normal) return;
-        if(!isActive) return;
-        StartCoroutine(TryGrab());
-    }
+    #region Misc
 
     public void SetState(bool state)
     {
@@ -89,62 +92,11 @@ public class Movement : MonoBehaviour
         }
     }
 
-    private IEnumerator TryGrab()
-    {
-        grabber.SetActive(true);
-        _animator.SetTrigger(_grabTrigHash);
-        yield return new WaitForSeconds(0.3f);
-        grabber.SetActive(false);
-        if(grabState != GrabState.Grabber)
-            _animator.SetTrigger(_throwTrigHash);
-    }
-
-    private void Grab(Movement grabbed)
-    {
-        grabState = GrabState.Grabber;
-        grabber.SetActive(false);
-        _grabbed = grabbed;
-        StartCoroutine(ThrowDelay());
-    }
-
-    private IEnumerator ThrowDelay()
-    {
-        yield return new WaitForSeconds(0.3f);
-        _canThrow = true;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.layer == 6)
-        {
-            collision.gameObject.GetComponentInParent<Movement>().Grab(this);
-            grabState = GrabState.Grabbed;
-        }
-    }
-
-    public IEnumerator GetThrown(float direction)
-    {
-        grabState = GrabState.Thrown;
-        _rb.linearVelocity = new Vector2(direction > 0 ? throwStrength.x : -throwStrength.x, throwStrength.y);
-        yield return new WaitForSeconds(1f);
-        grabState = GrabState.Normal;
-    }
-
-    private IEnumerator Throw(float direction)
-    {
-        _animator.SetTrigger(_throwTrigHash);
-        yield return new WaitForSeconds(0.2f);
-        StartCoroutine(_grabbed.GetThrown(direction));
-        yield return new WaitForSeconds(0.3f);
-        _canThrow = false;
-        grabState = GrabState.Normal;
-    }
-
     public void OnMove(InputAction.CallbackContext context)
     {
-        
-        if(!isActive) return;
-        
+
+        if (!isActive) return;
+
         _direction = context.ReadValue<Vector2>().x;
 
         if (grabState == GrabState.Grabber && _direction != 0 && _canThrow)
@@ -153,33 +105,24 @@ public class Movement : MonoBehaviour
         }
 
         if (grabState != GrabState.Normal) return;
-        
+
         _animator.SetBool(_walkBoolHash, _direction != 0);
         float newYRotation = transform.rotation.eulerAngles.y;
-        if (_direction < 0) newYRotation = - 180;
+        if (_direction < 0) newYRotation = -180;
         if (_direction > 0) newYRotation = 0;
         transform.rotation = Quaternion.Euler(new Vector3(0f, newYRotation, 0f));
     }
 
-    public void OnAttack(InputAction.CallbackContext context)
+    #endregion
+
+    #region jump and dbJump
+    public void OnJump(InputAction.CallbackContext context)
     {
         if (!context.started || grabState != GrabState.Normal) return;
         if (!isActive) return;
-        _animator.SetTrigger(_castTriggerHash);
-        Instantiate(Projectile_Prefab, Launch_Offset.position, transform.rotation);
-        ProjectileBehaviour p = Instantiate(Projectile_Prefab, Launch_Offset.position, transform.rotation);
-    }
-    private void Smash()
-    {
-        if (!isActive) return;
-        Area_of_Attack a = Instantiate(Smash_Prefab, Launch_Offset.position, transform.rotation);
-        a.charged_time = _chargedTime;
-        _chargedTime = 0f;
-    }
-    public void OnSmash(InputAction.CallbackContext context)
-    {
-        if (grabState != GrabState.Normal) return;
-        _charging = true;
+        if (nb_double_jump <= 0) return;
+        nb_double_jump = nb_double_jump - 1;
+        _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, jump_power);
     }
 
     public void Reset_Double_Jump_Ground()
@@ -203,36 +146,123 @@ public class Movement : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (grabState == GrabState.Grabbed)
-        {
-            return;
-        }
+    #endregion
 
-        if (grabState == GrabState.Thrown)
+    #region grab
+    [Header("Grab")]
+    [SerializeField] private GameObject grabber;
+    [SerializeField] private Vector2 throwStrength;
+
+    public GrabState grabState;
+    public enum GrabState
+    {
+        Normal,
+        Grabbed,
+        Thrown,
+        Grabber
+    }
+
+    public void OnGrab(InputAction.CallbackContext context)
+    {
+        if(!context.started || grabState != GrabState.Normal) return;
+        if(!isActive) return;
+        StartCoroutine(TryGrab());
+    }
+
+
+
+    private IEnumerator TryGrab()
+    {
+        grabber.SetActive(true);
+        _animator.SetTrigger(_grabTrigHash);
+        yield return new WaitForSeconds(0.3f);
+        grabber.SetActive(false);
+        if(grabState != GrabState.Grabber)
+            _animator.SetTrigger(_throwTrigHash);
+    }
+
+    private void Grab(Movement grabbed)
+    {
+        grabState = GrabState.Grabber;
+        grabber.SetActive(false);
+        _grabbed = grabbed;
+        StartCoroutine(ThrowDelay());
+    }
+    #endregion
+
+    #region throw
+
+
+    private IEnumerator ThrowDelay()
+    {
+        yield return new WaitForSeconds(0.3f);
+        _canThrow = true;
+    }
+
+    public IEnumerator GetThrown(float direction)
+    {
+        grabState = GrabState.Thrown;
+        _rb.linearVelocity = new Vector2(direction > 0 ? throwStrength.x : -throwStrength.x, throwStrength.y);
+        yield return new WaitForSeconds(1f);
+        grabState = GrabState.Normal;
+    }
+
+    private IEnumerator Throw(float direction)
+    {
+        _animator.SetTrigger(_throwTrigHash);
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(_grabbed.GetThrown(direction));
+        yield return new WaitForSeconds(0.3f);
+        _canThrow = false;
+        grabState = GrabState.Normal;
+    }
+
+    #endregion
+
+    #region Blaster
+    [Header("Blaster")]
+    [SerializeField] private ProjectileBehaviour Projectile_Prefab;
+    [SerializeField] private Transform Launch_Offset;
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (!context.started || grabState != GrabState.Normal) return;
+        if (!isActive) return;
+        _animator.SetTrigger(_castTriggerHash);
+        Instantiate(Projectile_Prefab, Launch_Offset.position, transform.rotation);
+        ProjectileBehaviour p = Instantiate(Projectile_Prefab, Launch_Offset.position, transform.rotation);
+    }
+
+    #endregion
+
+    #region Smash
+    [Header("Smash")]
+    [SerializeField] private Area_of_Attack Smash_Prefab;
+    [SerializeField] private ChargingParticle chargingSmashParticles;
+
+
+    private void Smash()
+    {
+        if (!isActive) return;
+        Area_of_Attack a = Instantiate(Smash_Prefab, Launch_Offset.position, transform.rotation);
+        a.charged_time = _chargedTime;
+        _chargedTime = 0f;
+    }
+    public void OnSmash(InputAction.CallbackContext context)
+    {
+        if (grabState != GrabState.Normal) return;
+        _charging = true;
+    }
+
+    #endregion
+
+    #region collisions and triggers
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == 6)
         {
-            return;
-        }
-        
-        if (_charging)
-        {
-            _chargedTime += Time.deltaTime;
-            chargingSmashParticles.Evaluate(_chargedTime);
-            if ((_chargedTime > 3)/*||()*/)
-            {
-                Smash();
-                _charging = false;
-            }
-        }
-        if(isActive)
-        {
-            _rb.linearVelocity = new Vector2(_direction * move_speed, _rb.linearVelocity.y);
-        }
-        else
-        {
-            _rb.linearVelocity = new Vector2(0, _rb.linearVelocity.y);
+            collision.gameObject.GetComponentInParent<Movement>().Grab(this);
+            grabState = GrabState.Grabbed;
         }
     }
 
@@ -256,4 +286,5 @@ public class Movement : MonoBehaviour
             Remove_Ground_Jump();
         }
     }
+    #endregion
 }
