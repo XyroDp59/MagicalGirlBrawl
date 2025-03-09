@@ -40,7 +40,7 @@ public class HealthSystem : MonoBehaviour
         fillImage.color = c;
     }
 
-    public void addHealth(int health)
+    public int addHealth(int health)
     {
         if (health < 0) _hitInstance.start();
         
@@ -52,6 +52,7 @@ public class HealthSystem : MonoBehaviour
         {
             TotemDeath.Invoke(GetComponent<Movement>());    
         }
+        return currentHealth;
     }
     
     public IEnumerator FlashHit()
