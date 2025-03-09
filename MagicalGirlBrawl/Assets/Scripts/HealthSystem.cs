@@ -27,7 +27,7 @@ public class HealthSystem : MonoBehaviour
         currentHealth = maxHealth;
         player = transform.parent.GetComponent<Player>();
         UnityAction<Movement> rm = player.RemoveMovement;
-        TotemDeath.AddListener(rm);
+        //TotemDeath.AddListener(rm);
         
         _hitInstance = FMODUnity.RuntimeManager.CreateInstance("event:/SFX/Hit");
         _spriteRenderer = GetComponent<SpriteRenderer>();
