@@ -1,13 +1,15 @@
 using System;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class HealthSystem : MonoBehaviour
 {
     [SerializeField] public int maxHealth;
     [SerializeField] private RectTransform healthBar;
-    private int currentHealth;
+    [SerializeField] private Image fillImage;
 
+    private int currentHealth;
     public UnityEvent<Movement> TotemDeath;
     Player player;
 
@@ -19,6 +21,12 @@ public class HealthSystem : MonoBehaviour
         TotemDeath.AddListener(rm);
 
     }
+
+    public void SetColor(Color c)
+    {
+        fillImage.color = c;
+    }
+
     public void addHealth(int health)
     {
         currentHealth = Mathf.Clamp(currentHealth + health, 0, maxHealth);

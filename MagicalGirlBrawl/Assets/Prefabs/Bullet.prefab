@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3224241278047837562}
   - component: {fileID: 1900967343640257233}
   - component: {fileID: 8493020660440570886}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32,7 +32,8 @@ Transform:
   m_LocalPosition: {x: 9.32, y: -9.06, z: 0}
   m_LocalScale: {x: 0.4, y: 0.4, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1335577886338584151}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
 --- !u!212 &5460669886958622990
@@ -42,7 +43,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 712786521112406426}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -80,7 +81,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0.71875906, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -175,3 +176,77 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.4, y: 0.4}
   m_EdgeRadius: 0
+--- !u!1001 &5174249967054686104
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7794020546003047684}
+    m_Modifications:
+    - target: {fileID: 39619403412049959, guid: a7e0edbf851592f45b9d2fe01fa0e44b, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.62438565
+      objectReference: {fileID: 0}
+    - target: {fileID: 39619403412049959, guid: a7e0edbf851592f45b9d2fe01fa0e44b, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.07008187
+      objectReference: {fileID: 0}
+    - target: {fileID: 39619403412049959, guid: a7e0edbf851592f45b9d2fe01fa0e44b, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.7283019
+      objectReference: {fileID: 0}
+    - target: {fileID: 6144684420491839951, guid: a7e0edbf851592f45b9d2fe01fa0e44b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6144684420491839951, guid: a7e0edbf851592f45b9d2fe01fa0e44b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6144684420491839951, guid: a7e0edbf851592f45b9d2fe01fa0e44b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6144684420491839951, guid: a7e0edbf851592f45b9d2fe01fa0e44b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6144684420491839951, guid: a7e0edbf851592f45b9d2fe01fa0e44b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6144684420491839951, guid: a7e0edbf851592f45b9d2fe01fa0e44b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6144684420491839951, guid: a7e0edbf851592f45b9d2fe01fa0e44b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6144684420491839951, guid: a7e0edbf851592f45b9d2fe01fa0e44b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6144684420491839951, guid: a7e0edbf851592f45b9d2fe01fa0e44b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6144684420491839951, guid: a7e0edbf851592f45b9d2fe01fa0e44b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7284904806448568812, guid: a7e0edbf851592f45b9d2fe01fa0e44b, type: 3}
+      propertyPath: m_Name
+      value: SpinningParticles
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a7e0edbf851592f45b9d2fe01fa0e44b, type: 3}
+--- !u!4 &1335577886338584151 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6144684420491839951, guid: a7e0edbf851592f45b9d2fe01fa0e44b, type: 3}
+  m_PrefabInstance: {fileID: 5174249967054686104}
+  m_PrefabAsset: {fileID: 0}
