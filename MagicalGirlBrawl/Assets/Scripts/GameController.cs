@@ -90,6 +90,7 @@ public class GameController : MonoBehaviour
 
     public void OnPause()
     {
+        Debug.Log("Pause");
         if (!_isPaused)
         {
             _isPaused = true;

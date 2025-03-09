@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
     public UnityEvent<InputAction.CallbackContext> onGrab = new();
     public UnityEvent<InputAction.CallbackContext> onPrevious = new();
     public UnityEvent<InputAction.CallbackContext> onNext = new();
+    public UnityEvent<InputAction.CallbackContext> onPause = new();
 
 
     private IEnumerator Switch(int new_puppet)
@@ -120,6 +121,11 @@ public class Player : MonoBehaviour
     {
         Available[0].SetState(false);
         Available[1].SetState(false);
+    }
+
+    public void OnPause(InputAction.CallbackContext context)
+    {
+        onPause.Invoke(context);
     }
 
 }
