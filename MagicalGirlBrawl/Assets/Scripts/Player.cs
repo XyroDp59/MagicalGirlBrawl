@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    private static int playerCount = -1;
+    public static int playerCount = -1;
     private int playerIndex;
     [SerializeField] private int team;
     [SerializeField] private List<Movement> Available;
@@ -28,8 +28,6 @@ public class Player : MonoBehaviour
     public UnityEvent<InputAction.CallbackContext> onNext = new();
     public UnityEvent<InputAction.CallbackContext> onPause = new();
 
-
-
     private IEnumerator Trail(Vector3 p1, Movement current)
     {
         float t = 0f;
@@ -45,24 +43,6 @@ public class Player : MonoBehaviour
         Destroy(trail);
     }
     
-    private IEnumerator Switch(int new_puppet)
-    {
-        can_switch = false;
-        Vector3 p1 = Available.ElementAt(_current).transform.position;
-        _current += new_puppet;
-        if(_current < 0) _current += Available.Count;
-        _current %= Available.Count;
-        StartCoroutine(Trail(p1,Available.ElementAt(_current)));
-        yield return new WaitForSeconds(1f);
-        int i = 0;
-        foreach (var player in Available)
-        {
-            player.SetState(i == _current);
-            i += 1;
-        }
-        can_switch = true;
-    }
-
     public void OnJump(InputAction.CallbackContext context)
     {
         onJump.Invoke(context);
@@ -108,6 +88,32 @@ public class Player : MonoBehaviour
 
     public void RemoveMovement(Movement m)
     {
+        StartCoroutine(RemoveMovementRoutine(m));
+    }
+    
+    private IEnumerator Switch(int new_puppet)
+    {
+        can_switch = false;
+        Vector3 p1 = Available.ElementAt(_current).transform.position;
+        _current += new_puppet;
+        if(_current < 0) _current += Available.Count;
+        _current %= Available.Count;
+        StartCoroutine(Trail(p1,Available.ElementAt(_current)));
+        yield return new WaitForSeconds(1f);
+        int i = 0;
+        foreach (var player in Available)
+        {
+            player.SetState(i == _current);
+            i += 1;
+        }
+        can_switch = true;
+    }
+
+
+    private IEnumerator RemoveMovementRoutine(Movement m)
+    {
+        yield return null;
+        
         if(Available.Count > 0)
         {
             Available.Remove(m);
@@ -137,11 +143,23 @@ public class Player : MonoBehaviour
         StartCoroutine(Switch(1));
     }
 
+    private void OnTotemDeath(Movement m)
+    {
+        StartCoroutine(Switch(-1));
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Available[0].SetState(false);
         Available[1].SetState(false);
+        
+        // Health listener code
+        HealthSystem[] healthSystems = GetComponentsInChildren<HealthSystem>();
+        foreach (HealthSystem hs in healthSystems)
+        {
+            hs.TotemDeath.AddListener(OnTotemDeath);
+        }
     }
 
     public void OnPause(InputAction.CallbackContext context)

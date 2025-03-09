@@ -166,7 +166,7 @@ public class Movement : MonoBehaviour
         if (_direction > 0) newYRotation = 0;
         transform.rotation = Quaternion.Euler(new Vector3(0f, newYRotation, 0f));
     }
-
+    
     #endregion
 
     #region Switch Animation
@@ -188,8 +188,7 @@ public class Movement : MonoBehaviour
         
         _switchInstance.start();
     }
-
-
+    
     #endregion
 
     #region jump and dbJump
@@ -380,8 +379,8 @@ public class Movement : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent<BlastZone>(out BlastZone blastZone))
         {
-            _healthSystem.addHealth(blastZone.damageDealt);
-            StartCoroutine(GetThrown(0, false, blastZone.stunDuration));
+            int newHealth = _healthSystem.addHealth(blastZone.damageDealt);
+            if(newHealth > 0) StartCoroutine(GetThrown(0, false, blastZone.stunDuration));
             nb_double_jump = 1;
         }
         
