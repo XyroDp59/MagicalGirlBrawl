@@ -20,11 +20,18 @@ public class GameController : MonoBehaviour
     WaitForSeconds second;
     public GameObject restroom;
     [SerializeField] TextMeshProUGUI startAnnouncementText;
-
+    
+    // FMOD
+    private FMOD.Studio.EventInstance _waitMusic;
+    private FMOD.Studio.EventInstance _music;
 
     private void Awake()
     {
         instance = this;
+        _waitMusic = FMODUnity.RuntimeManager.CreateInstance("event:/Soundtrack/A destiny cannot wait");
+        _music = FMODUnity.RuntimeManager.CreateInstance("event:/Soundtrack/Magical Destiny");
+        
+        _waitMusic.start();
         second = new WaitForSeconds(1);
     }
 
@@ -39,6 +46,8 @@ public class GameController : MonoBehaviour
 
     IEnumerator StartFight()
     {
+        _waitMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        
         Debug.Log("hihiha");
         startAnnouncementText.transform.parent.gameObject.SetActive(true);
         startAnnouncementText.text = decompteString[3];
@@ -49,6 +58,8 @@ public class GameController : MonoBehaviour
             //source.Play();
             yield return second;
         }
+        _music.start();
+        
         startAnnouncementText.transform.parent.gameObject.SetActive(false);
         yield return second;
         restroom.SetActive(false);

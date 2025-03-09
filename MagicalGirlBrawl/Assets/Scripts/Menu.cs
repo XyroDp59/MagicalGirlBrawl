@@ -20,6 +20,8 @@ public class Menu : MonoBehaviour
     private FMOD.Studio.Bus _soundtrackBus;
     private FMOD.Studio.Bus _sfxBus;
 
+    private bool _isSFXClicked;
+
     void Awake()
     {
         _masterBus = FMODUnity.RuntimeManager.GetBus("bus:/");
@@ -65,12 +67,22 @@ public class Menu : MonoBehaviour
     public void OnSFXVolumeChange()
     {
         _sfxBus.setVolume(sfxSlider.value);
+        _isSFXClicked = true;
     }
     
     // ------------ OTHER -----------------
     void Start()
     {
-        _musicInstance = FMODUnity.RuntimeManager.CreateInstance("event:/Soundtrack/Magical Destiny");
+        _musicInstance = FMODUnity.RuntimeManager.CreateInstance("event:/Soundtrack/A destiny can wait");
         _musicInstance.start();
+    }
+
+    void Update()
+    {
+        if (Input.GetMouseButtonUp(0) && _isSFXClicked)
+        {
+            _isSFXClicked = false;
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/Magic Sparkle");
+        }
     }
 }
