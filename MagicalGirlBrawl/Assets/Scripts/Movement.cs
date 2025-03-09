@@ -346,9 +346,9 @@ public class Movement : MonoBehaviour
 
     IEnumerator SmashCooldown()
     {
-        _canSmash = true;
-        yield return new WaitForSeconds(0.2f);
         _canSmash = false;
+        yield return new WaitForSeconds(0.2f);
+        _canSmash = true;
     }
 
     public void OnSmashRelease(InputAction.CallbackContext context)
