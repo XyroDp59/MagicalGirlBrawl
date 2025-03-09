@@ -29,6 +29,7 @@ public class GameController : MonoBehaviour
     private FMOD.Studio.EventInstance _music;
     
     private bool _isPaused = false;
+    private bool _gameStarted = false;
     // --------------------
     
     private void Awake()
@@ -44,7 +45,7 @@ public class GameController : MonoBehaviour
     public void PlayerIsReady(Player p)
     {
         if(!playersReady.Contains(p)) playersReady.Add(p);
-        if (playersReady.Count == 2)
+        if (playersReady.Count == 2 && !_gameStarted)
         {
             StartCoroutine(StartFight());
         }
@@ -53,6 +54,7 @@ public class GameController : MonoBehaviour
     IEnumerator StartFight()
     {
         _waitMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        _gameStarted = true;
         
         Debug.Log("hihiha");
         startAnnouncementText.transform.parent.gameObject.SetActive(true);
