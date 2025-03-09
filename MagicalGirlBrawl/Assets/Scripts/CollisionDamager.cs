@@ -20,6 +20,4 @@ public class CollisionDamager : MonoBehaviour
             }
         }
     }
-    //public int playerID = 0;
-
 }

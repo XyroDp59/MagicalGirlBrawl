@@ -17,8 +17,17 @@ public class ProjectileBehaviour : MonoBehaviour
         transform.position += transform.right * Time.deltaTime * speed;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+
+    private void OnTriggerEnter2D(Collider2D other)
     {
+        Movement m;
+        if (other.TryGetComponent(out m))
+        {
+            if (!m.isActive)
+            {
+                return;
+            }
+        }
         Destroy(gameObject);
     }
 }

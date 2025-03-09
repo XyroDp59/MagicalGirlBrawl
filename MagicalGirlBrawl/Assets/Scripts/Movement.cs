@@ -312,8 +312,8 @@ public class Movement : MonoBehaviour
         if (!context.started || grabState != GrabState.Normal) return;
         if (!isActive) return;
         _animator.SetTrigger(_castTriggerHash);
-        Instantiate(Projectile_Prefab, Launch_Offset.position, transform.rotation);
-        
+        ProjectileBehaviour b = Instantiate(Projectile_Prefab, Launch_Offset.position, transform.rotation);
+        b.GetComponent<CollisionDamager>().playerCaster = this;
         _sparkleInstance.start();
     }
 
@@ -326,10 +326,21 @@ public class Movement : MonoBehaviour
 
     private bool _cancelSmash;
 
+    private bool _canSmash = true;
+
     public void OnSmash(InputAction.CallbackContext context)
     {
         if (grabState != GrabState.Normal) return;
+        if (!_cancelSmash) return;
         _charging = true;
+        StartCoroutine(SmashCooldown());
+    }
+
+    IEnumerator SmashCooldown()
+    {
+        _canSmash = true;
+        yield return new WaitForSeconds(0.2f);
+        _canSmash = false;
     }
 
     public void OnSmashRelease(InputAction.CallbackContext context)
@@ -367,7 +378,6 @@ public class Movement : MonoBehaviour
         if (other.gameObject.layer == 7)
         {
             Reset_Double_Jump_Switch();
-            _healthSystem.addHealth(-30);
         }
     }
 
