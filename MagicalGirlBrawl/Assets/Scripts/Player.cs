@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     public UnityEvent<InputAction.CallbackContext> onMove = new();
     public UnityEvent<InputAction.CallbackContext> onCast = new();
     public UnityEvent<InputAction.CallbackContext> onSmash = new();
+    public UnityEvent<InputAction.CallbackContext> onGrab = new();
 
     public void OnJump(InputAction.CallbackContext context)
     {
@@ -37,6 +38,11 @@ public class Player : MonoBehaviour
     public void OnSmash(InputAction.CallbackContext context)
     {
         onSmash.Invoke(context);
+    }
+
+    public void OnGrab(InputAction.CallbackContext context)
+    {
+        onGrab.Invoke(context);
     }
     
     private void Awake()

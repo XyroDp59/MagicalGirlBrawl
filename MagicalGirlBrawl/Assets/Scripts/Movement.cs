@@ -66,6 +66,13 @@ public class Movement : MonoBehaviour
         _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, jump_power);
     }
 
+    public void OnGrab(InputAction.CallbackContext context)
+    {
+        if(!context.started || _grabState != GrabState.Normal) return;
+        if(!isActive) return;
+        StartCoroutine(TryGrab());
+    }
+
     public void SetState(bool state)
     {
         isActive = state;
@@ -112,7 +119,7 @@ public class Movement : MonoBehaviour
     {
         if (collision.gameObject.layer == 6)
         {
-            collision.gameObject.GetComponent<Movement>().Grab(this);
+            collision.gameObject.GetComponentInParent<Movement>().Grab(this);
             _grabState = GrabState.Grabbed;
         }
     }
@@ -120,7 +127,7 @@ public class Movement : MonoBehaviour
     public IEnumerator GetThrown(float direction)
     {
         _grabState = GrabState.Thrown;
-        _rb.linearVelocity = new Vector2(direction * throwStrength.x, throwStrength.y);
+        _rb.linearVelocity = new Vector2(direction > 0 ? throwStrength.x : -throwStrength.x, throwStrength.y);
         yield return new WaitForSeconds(1f);
         _grabState = GrabState.Normal;
     }
@@ -200,6 +207,11 @@ public class Movement : MonoBehaviour
     void Update()
     {
         if (_grabState == GrabState.Grabbed)
+        {
+            return;
+        }
+
+        if (_grabState == GrabState.Thrown)
         {
             return;
         }
