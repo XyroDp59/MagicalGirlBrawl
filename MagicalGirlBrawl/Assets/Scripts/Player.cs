@@ -13,12 +13,32 @@ public class Player : MonoBehaviour
     [SerializeField] private List<Movement> Available;
     private int _current;
 
+    private bool can_switch = true;
+
     private Color playerColor;
     public UnityEvent<InputAction.CallbackContext> onJump = new();
     public UnityEvent<InputAction.CallbackContext> onMove = new();
     public UnityEvent<InputAction.CallbackContext> onCast = new();
     public UnityEvent<InputAction.CallbackContext> onSmash = new();
     public UnityEvent<InputAction.CallbackContext> onGrab = new();
+
+
+    private IEnumerator Switch(int new_puppet)
+    {
+        can_switch = false;
+        yield return new WaitForSeconds(0.5f);
+        _current += new_puppet;
+        if(_current < 0) _current += Available.Count;
+        _current %= Available.Count;
+        Debug.Log(_current);
+        int i = 0;
+        foreach (var player in Available)
+        {
+            player.SetState(i == _current);
+            i += 1;
+        }
+        can_switch = true;
+    }
 
     public void OnJump(InputAction.CallbackContext context)
     {
@@ -75,32 +95,18 @@ public class Player : MonoBehaviour
 
     public void OnPrevious(InputAction.CallbackContext context)
     {
+        if (!can_switch) return;
         if (!context.started) return;
         if (Available.Count == 0) return;
-        _current -= 1;
-        if(_current < 0) _current += Available.Count;
-        Debug.Log(_current);
-        int i = 0;
-        foreach (var player in Available)
-        {
-            player.SetState(i == _current);
-            i += 1;
-        }
+        StartCoroutine(Switch(-1));
     }
 
     public void OnNext(InputAction.CallbackContext context)
     {
+        if (!can_switch) return;
         if (!context.started) return;
         if (Available.Count == 0) return;
-        _current += 1;
-        _current %= Available.Count;
-        Debug.Log(_current);
-        int i = 0;
-        foreach (var player in Available)
-        {
-            player.SetState(i == _current);
-            i += 1;
-        }
+        StartCoroutine(Switch(1));
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -109,4 +115,5 @@ public class Player : MonoBehaviour
         Available[0].SetState(false);
         Available[1].SetState(false);
     }
+
 }
