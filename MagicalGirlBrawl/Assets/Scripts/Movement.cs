@@ -8,6 +8,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private float move_speed = 7f;
     [SerializeField] private float jump_power = 17f;
     [SerializeField] public int nb_double_jump = 2;
+    [SerializeField] private BoxCollider2D throwCollider;
     
     public SpriteRenderer childRenderer;
     private SpriteRenderer _renderer;
@@ -67,6 +68,8 @@ public class Movement : MonoBehaviour
 
     void Update()
     {
+        throwCollider.enabled = grabState == GrabState.Thrown;
+        
         if (grabState == GrabState.Grabbed)
         {
             _rb.AddForce(5*(grabbedTransform.position - transform.position), ForceMode2D.Force);
