@@ -14,6 +14,7 @@ public class Movement : MonoBehaviour
     private HealthSystem _healthSystem;
     private Rigidbody2D _rb;
     private Animator _animator;
+    private BoxCollider2D collider;
     private Movement _grabbed;
     public Transform grabbedTransform;
     
@@ -47,6 +48,7 @@ public class Movement : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
+        collider = GetComponent<BoxCollider2D>();
         _rb = GetComponent<Rigidbody2D>();
         //_playerInput = GetComponent<PlayerInput>();
         _animator = GetComponent<Animator>();
@@ -125,11 +127,15 @@ public class Movement : MonoBehaviour
         _renderer.enabled = state;
         if (!state)
         {
+            //collider.isTrigger = true;
+            _renderer.sortingOrder = -5;
             _animator.SetBool(_walkBoolHash, false);
             _direction = 0;
         }
         else
         {
+            //collider.isTrigger = false;
+            _renderer.sortingOrder = 0;
             Reset_Double_Jump_Switch();
         }
     }
