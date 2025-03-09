@@ -147,5 +147,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61853f1a4461342d4a44c0cd7bf0915b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageDealt: 30
+  damageDealt: -30
   stunDuration: 0.6
