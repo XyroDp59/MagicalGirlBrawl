@@ -166,7 +166,7 @@ public class Movement : MonoBehaviour
         if (_direction > 0) newYRotation = 0;
         transform.rotation = Quaternion.Euler(new Vector3(0f, newYRotation, 0f));
     }
-
+    
     #endregion
 
     #region Switch Animation
@@ -188,8 +188,7 @@ public class Movement : MonoBehaviour
         
         _switchInstance.start();
     }
-
-
+    
     #endregion
 
     #region jump and dbJump

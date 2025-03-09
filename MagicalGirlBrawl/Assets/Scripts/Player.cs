@@ -28,8 +28,6 @@ public class Player : MonoBehaviour
     public UnityEvent<InputAction.CallbackContext> onNext = new();
     public UnityEvent<InputAction.CallbackContext> onPause = new();
 
-
-
     private IEnumerator Trail(Vector3 p1, Movement current)
     {
         float t = 0f;
@@ -44,6 +42,7 @@ public class Player : MonoBehaviour
         }
         Destroy(trail);
     }
+    
     
     private IEnumerator Switch(int new_puppet)
     {
@@ -137,11 +136,23 @@ public class Player : MonoBehaviour
         StartCoroutine(Switch(1));
     }
 
+    private void OnTotemDeath(Movement m)
+    {
+        StartCoroutine(Switch(-1));
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Available[0].SetState(false);
         Available[1].SetState(false);
+        
+        // Health listener code
+        HealthSystem[] healthSystems = GetComponentsInChildren<HealthSystem>();
+        foreach (HealthSystem hs in healthSystems)
+        {
+            hs.TotemDeath.AddListener(OnTotemDeath);
+        }
     }
 
     public void OnPause(InputAction.CallbackContext context)
