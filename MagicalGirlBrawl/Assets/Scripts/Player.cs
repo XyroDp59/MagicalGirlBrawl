@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     public UnityEvent<InputAction.CallbackContext> onMove = new();
     public UnityEvent<InputAction.CallbackContext> onCast = new();
     public UnityEvent<InputAction.CallbackContext> onSmash = new();
+    public UnityEvent<InputAction.CallbackContext> onSmashReleased = new();
     public UnityEvent<InputAction.CallbackContext> onGrab = new();
 
 
@@ -58,6 +59,7 @@ public class Player : MonoBehaviour
     public void OnSmash(InputAction.CallbackContext context)
     {
         onSmash.Invoke(context);
+        if (context.canceled) onSmashReleased.Invoke(context);
     }
 
     public void OnGrab(InputAction.CallbackContext context)

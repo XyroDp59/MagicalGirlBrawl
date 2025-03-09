@@ -54,14 +54,16 @@ public class Movement : MonoBehaviour
             return;
         }
 
-        if (_charging)
+        if (_charging && isActive)
         {
             _chargedTime += Time.deltaTime;
+            chargingSmashParticles.gameObject.SetActive(true);
             chargingSmashParticles.Evaluate(_chargedTime);
-            if ((_chargedTime > 3)/*||()*/)
+            if ((_chargedTime > 3) || (_cancelSmash))
             {
                 Smash();
                 _charging = false;
+                _cancelSmash = false;
             }
         }
         if (isActive)
@@ -95,7 +97,7 @@ public class Movement : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
 
-        if (!isActive) return;
+        if (!isActive || _charging) return;
 
         _direction = context.ReadValue<Vector2>().x;
 
@@ -152,6 +154,7 @@ public class Movement : MonoBehaviour
     [Header("Grab")]
     [SerializeField] private GameObject grabber;
     [SerializeField] private Vector2 throwStrength;
+    [SerializeField] private float grabRange;
 
     public GrabState grabState;
     public enum GrabState
@@ -168,25 +171,26 @@ public class Movement : MonoBehaviour
         if(!isActive) return;
         StartCoroutine(TryGrab());
     }
-
-
-
+    
     private IEnumerator TryGrab()
     {
-        grabber.SetActive(true);
-        _animator.SetTrigger(_grabTrigHash);
-        yield return new WaitForSeconds(0.3f);
-        grabber.SetActive(false);
-        if(grabState != GrabState.Grabber)
-            _animator.SetTrigger(_throwTrigHash);
-    }
-
-    private void Grab(Movement grabbed)
-    {
-        grabState = GrabState.Grabber;
-        grabber.SetActive(false);
-        _grabbed = grabbed;
-        StartCoroutine(ThrowDelay());
+        yield return new WaitForSeconds(0.1f);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right, grabRange);
+        Debug.DrawRay(transform.position, Vector2.right * grabRange, Color.red, 1f);
+        if (hit.transform.gameObject.layer == 8)
+        {
+            grabState = GrabState.Grabber;
+            Movement grabbedMovement = hit.transform.GetComponent<Movement>();
+            grabbedMovement.grabState = GrabState.Grabbed;
+            _grabbed = grabbedMovement;
+            grabber.SetActive(true);
+            StartCoroutine(ThrowDelay());
+        }
+        else
+        {
+            grabState = GrabState.Normal;
+            _animator.SetTrigger(_grabTrigHash);
+        }
     }
     #endregion
 
@@ -211,6 +215,7 @@ public class Movement : MonoBehaviour
     {
         _animator.SetTrigger(_throwTrigHash);
         yield return new WaitForSeconds(0.2f);
+        grabber.SetActive(false);
         StartCoroutine(_grabbed.GetThrown(direction));
         yield return new WaitForSeconds(0.3f);
         _canThrow = false;
@@ -240,32 +245,34 @@ public class Movement : MonoBehaviour
     [SerializeField] private Area_of_Attack Smash_Prefab;
     [SerializeField] private ChargingParticle chargingSmashParticles;
 
+    private bool _cancelSmash;
 
-    private void Smash()
-    {
-        if (!isActive) return;
-        Area_of_Attack a = Instantiate(Smash_Prefab, Launch_Offset.position, transform.rotation);
-        a.charged_time = _chargedTime;
-        _chargedTime = 0f;
-    }
     public void OnSmash(InputAction.CallbackContext context)
     {
         if (grabState != GrabState.Normal) return;
         _charging = true;
     }
 
+    public void OnSmashRelease(InputAction.CallbackContext context)
+    {
+        if (grabState != GrabState.Normal) return;
+        _cancelSmash = true;
+    }
+
+    private void Smash()
+    {
+        if (!isActive) return;
+        Area_of_Attack a = Instantiate(Smash_Prefab, Launch_Offset.position, transform.rotation);
+        a.charged_time = _chargedTime;
+        chargingSmashParticles.gameObject.SetActive(false);
+        _chargedTime = 0f;
+    }
+
+
     #endregion
 
     #region collisions and triggers
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.layer == 6)
-        {
-            collision.gameObject.GetComponentInParent<Movement>().Grab(this);
-            grabState = GrabState.Grabbed;
-        }
-    }
-
+    
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Ground"))

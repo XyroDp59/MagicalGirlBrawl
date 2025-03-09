@@ -20,10 +20,4 @@ public class Area_of_Attack : MonoBehaviour
     {
         return;//Add damage dealt to player using the Damage curve
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
