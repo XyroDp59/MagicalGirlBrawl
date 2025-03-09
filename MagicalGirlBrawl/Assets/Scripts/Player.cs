@@ -82,6 +82,7 @@ public class Player : MonoBehaviour
         {
             movement.childRenderer.color = playerColor;
             movement.GetComponent<HealthSystem>().SetColor(playerColor);
+            movement.playerID = playerIndex;
         }
         transform.position = GameController.instance.restroom.transform.GetChild(playerIndex).position;
     }
@@ -91,6 +92,7 @@ public class Player : MonoBehaviour
         if(Available.Count > 0)
         {
             Available.Remove(m);
+            m.gameObject.SetActive(false);
         }
         else
         {

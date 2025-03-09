@@ -22,6 +22,7 @@ public class Movement : MonoBehaviour
     private bool _charging;
     private bool _canThrow;
     public bool isActive = false;
+    public int playerID = 0;
 
     private readonly int _walkBoolHash = Animator.StringToHash("Walking");
     private readonly int _castTriggerHash = Animator.StringToHash("Cast");
@@ -347,6 +348,7 @@ public class Movement : MonoBehaviour
         Area_of_Attack a = Instantiate(Smash_Prefab, Launch_Offset.position, transform.rotation);
         a.charged_time = _chargedTime;
         chargingSmashParticles.gameObject.SetActive(false);
+        a.GetComponent<CollisionDamager>().playerCaster = this;
         _chargedTime = 0f;
     }
 
