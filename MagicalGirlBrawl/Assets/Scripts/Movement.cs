@@ -68,11 +68,14 @@ public class Movement : MonoBehaviour
 
         if (_charging && isActive)
         {
+            _animator.SetTrigger("SmashCharging");
             _chargedTime += Time.deltaTime;
             chargingSmashParticles.gameObject.SetActive(true);
             chargingSmashParticles.Evaluate(_chargedTime);
+            _rb.linearVelocity = new Vector2(0, _rb.linearVelocity.y);
             if ((_chargedTime > 3) || (_cancelSmash))
             {
+                _animator.SetTrigger("SmashRelease");
                 Smash();
                 _charging = false;
                 _cancelSmash = false;
