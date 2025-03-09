@@ -262,6 +262,7 @@ MonoBehaviour:
   - {fileID: 261844084038788588}
   - {fileID: 1126083389256213770}
   - {fileID: 7850772157175459467}
+  switchTrail: {fileID: 7902026467035860832, guid: b244ffa41abe23a49871a41954a9cfec, type: 3}
   onJump:
     m_PersistentCalls:
       m_Calls:
@@ -574,6 +575,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onPause:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &3495498847955186275
 PrefabInstance:
   m_ObjectHideFlags: 0

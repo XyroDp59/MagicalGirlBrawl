@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -13,6 +14,7 @@ public class Player : MonoBehaviour
     [SerializeField] private List<Movement> Available;
     private int _current = 2;
 
+    [SerializeField] private ParticleSystem switchTrail;
     private bool can_switch = true;
 
     private Color playerColor;
@@ -27,14 +29,31 @@ public class Player : MonoBehaviour
     public UnityEvent<InputAction.CallbackContext> onPause = new();
 
 
+
+    private IEnumerator Trail(Vector3 p1, Movement current)
+    {
+        float t = 0f;
+        ParticleSystem trail = Instantiate(switchTrail);
+        Vector3 p2;
+        while (t < 1)
+        {
+            p2 = current.transform.position;
+            trail.transform.position = new Vector3(Mathf.Lerp(p1.x,p2.x,t),Mathf.Lerp(p1.y,p2.y,t),0);
+            t = t + Time.deltaTime;
+            yield return null;
+        }
+        Destroy(trail);
+    }
+    
     private IEnumerator Switch(int new_puppet)
     {
         can_switch = false;
-        yield return new WaitForSeconds(1f);
+        Vector3 p1 = Available.ElementAt(_current).transform.position;
         _current += new_puppet;
         if(_current < 0) _current += Available.Count;
         _current %= Available.Count;
-        Debug.Log(_current);
+        StartCoroutine(Trail(p1,Available.ElementAt(_current)));
+        yield return new WaitForSeconds(1f);
         int i = 0;
         foreach (var player in Available)
         {
