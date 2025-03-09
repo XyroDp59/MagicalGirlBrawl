@@ -82,7 +82,7 @@ public class Player : MonoBehaviour
         {
             movement.childRenderer.color = playerColor;
             movement.GetComponent<HealthSystem>().SetColor(playerColor);
-            //todo : set playerID
+            movement.playerID = playerIndex;
         }
         transform.position = GameController.instance.restroom.transform.GetChild(playerIndex).position;
     }

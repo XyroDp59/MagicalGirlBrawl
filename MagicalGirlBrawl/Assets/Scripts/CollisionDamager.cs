@@ -12,7 +12,7 @@ public class CollisionDamager : MonoBehaviour
         Movement m;
         if(collision.TryGetComponent(out m))
         {
-        //    if (m.playerID == playerCaster.playerID) return;
+            if (m.playerID == playerCaster.playerID) return;
             if (m.isActive)
             {
                 HealthSystem h = m.GetComponent<HealthSystem>();
