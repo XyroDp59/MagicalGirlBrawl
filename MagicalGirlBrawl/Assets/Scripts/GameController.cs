@@ -9,14 +9,12 @@ public class GameController : MonoBehaviour
     public static GameController instance;
 
     [SerializeField] public Color[] colors = { Color.cyan, Color.red };
-    [SerializeField] List<AudioClip> decompteClip = new List<AudioClip>();
     [SerializeField] List<string> decompteString = new List<string>();
 
     public List<Player> players = new List<Player>();
     private List<Player> playersReady = new List<Player>();
-
-
-    AudioSource source;
+    
+    
     WaitForSeconds second;
     public GameObject restroom;
     [SerializeField] TextMeshProUGUI startAnnouncementText;
@@ -30,6 +28,8 @@ public class GameController : MonoBehaviour
     
     private bool _isPaused = false;
     private bool _gameStarted = false;
+
+    public List<FMOD.Studio.EventInstance> _decompteInstances;
     // --------------------
     
     private void Awake()
@@ -37,6 +37,14 @@ public class GameController : MonoBehaviour
         instance = this;
         _waitMusic = FMODUnity.RuntimeManager.CreateInstance("event:/Soundtrack/A destiny cannot wait");
         _music = FMODUnity.RuntimeManager.CreateInstance("event:/Soundtrack/Magical Destiny");
+        
+        // !!!!!! PAS TOUCHER !!!!!!! L'ORDRE EST GIGA IMPORTANT !!!!!!!!
+        _decompteInstances = new List<FMOD.Studio.EventInstance>();
+        _decompteInstances.Add(FMODUnity.RuntimeManager.CreateInstance("event:/Voix/Bait go"));
+        _decompteInstances.Add(FMODUnity.RuntimeManager.CreateInstance("event:/Voix/Bait 1"));
+        _decompteInstances.Add(FMODUnity.RuntimeManager.CreateInstance("event:/Voix/Bait 2"));
+        _decompteInstances.Add(FMODUnity.RuntimeManager.CreateInstance("event:/Voix/Bait 3"));
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         
         _waitMusic.start();
         second = new WaitForSeconds(1);
@@ -59,11 +67,11 @@ public class GameController : MonoBehaviour
         Debug.Log("hihiha");
         startAnnouncementText.transform.parent.gameObject.SetActive(true);
         startAnnouncementText.text = decompteString[3];
-        for (int i = decompteString.Count-1; i > 0; i--)
+        for (int i = decompteString.Count-1; i >= 0; i--)
         {
             startAnnouncementText.text = decompteString[i];
-            //source.clip = decompteClip[i];
-            //source.Play();
+            _decompteInstances[i].start();
+            
             yield return second;
         }
         _music.start();

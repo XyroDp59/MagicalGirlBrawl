@@ -40,6 +40,7 @@ public class Movement : MonoBehaviour
         _renderer = GetComponent<SpriteRenderer>();
         grabState = GrabState.Normal;
         _healthSystem = GetComponent<HealthSystem>();
+        
     }
 
     void Update()
@@ -169,6 +170,7 @@ public class Movement : MonoBehaviour
     {
         if(!context.started || grabState != GrabState.Normal) return;
         if(!isActive) return;
+        
         StartCoroutine(TryGrab());
     }
     
