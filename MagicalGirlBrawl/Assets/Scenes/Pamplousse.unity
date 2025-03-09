@@ -891,6 +891,7 @@ MonoBehaviour:
   Available:
   - {fileID: 905256806}
   - {fileID: 1322821159}
+  switchTrail: {fileID: 0}
   onJump:
     m_PersistentCalls:
       m_Calls: []
@@ -913,6 +914,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onNext:
+    m_PersistentCalls:
+      m_Calls: []
+  onPause:
     m_PersistentCalls:
       m_Calls: []
 --- !u!4 &1937235089
