@@ -285,11 +285,11 @@ public class Movement : MonoBehaviour
         _canThrow = true;
     }
 
-    public IEnumerator GetThrown(float direction)
+    public IEnumerator GetThrown(float direction, bool manualImpulse, float duration)
     {
         grabState = GrabState.Thrown;
-        _rb.linearVelocity = new Vector2(direction > 0 ? throwStrength.x : -throwStrength.x, throwStrength.y);
-        yield return new WaitForSeconds(1f);
+        if(manualImpulse) _rb.linearVelocity = new Vector2(direction > 0 ? throwStrength.x : -throwStrength.x, throwStrength.y);
+        yield return new WaitForSeconds(duration);
         grabState = GrabState.Normal;
     }
 
@@ -301,7 +301,7 @@ public class Movement : MonoBehaviour
         _canThrow = false;
         yield return new WaitForSeconds(0.2f);
         grabber.SetActive(false);
-        StartCoroutine(_grabbed.GetThrown(direction));
+        StartCoroutine(_grabbed.GetThrown(direction, true, 1f));
         yield return new WaitForSeconds(0.3f);
         grabState = GrabState.Normal;
     }
@@ -376,6 +376,13 @@ public class Movement : MonoBehaviour
     
     private void OnCollisionEnter2D(Collision2D other)
     {
+        if (other.gameObject.TryGetComponent<BlastZone>(out BlastZone blastZone))
+        {
+            _healthSystem.addHealth(blastZone.damageDealt);
+            StartCoroutine(GetThrown(0, false, blastZone.stunDuration));
+            nb_double_jump = 1;
+        }
+        
         if (other.gameObject.CompareTag("Ground"))
         {
             Reset_Double_Jump_Ground();
