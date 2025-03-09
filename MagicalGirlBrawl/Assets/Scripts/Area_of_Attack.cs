@@ -18,6 +18,7 @@ public class Area_of_Attack : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+
         return;//Add damage dealt to player using the Damage curve
     }
 }

@@ -15,6 +15,7 @@ public class Movement : MonoBehaviour
     private Rigidbody2D _rb;
     private Animator _animator;
     private Movement _grabbed;
+    public Transform grabbedTransform;
     
     private bool _charging;
     private bool _canThrow;
@@ -24,6 +25,8 @@ public class Movement : MonoBehaviour
     private readonly int _castTriggerHash = Animator.StringToHash("Cast");
     private readonly int _grabTrigHash = Animator.StringToHash("Grab");
     private readonly int _throwTrigHash = Animator.StringToHash("Throw");
+    private readonly int _missedGrabTrigHash = Animator.StringToHash("MissedGrab");
+    private readonly int _switchTriggerHash = Animator.StringToHash("Switch");
     
     private float _defaultYRotation;
     private float _direction = 0f;
@@ -40,14 +43,22 @@ public class Movement : MonoBehaviour
         _renderer = GetComponent<SpriteRenderer>();
         grabState = GrabState.Normal;
         _healthSystem = GetComponent<HealthSystem>();
-        
     }
 
     void Update()
     {
         if (grabState == GrabState.Grabbed)
         {
+            _rb.AddForce(5*(grabbedTransform.position - transform.position), ForceMode2D.Force);
             return;
+        }
+
+        if (grabState == GrabState.Grabber && !isActive)
+        {
+            grabber.SetActive(false);
+            _grabbed.grabState = GrabState.Normal;
+            _canThrow = false;
+            grabState = GrabState.Normal;
         }
 
         if (grabState == GrabState.Thrown)
@@ -57,11 +68,14 @@ public class Movement : MonoBehaviour
 
         if (_charging && isActive)
         {
+            _animator.SetTrigger("SmashCharging");
             _chargedTime += Time.deltaTime;
             chargingSmashParticles.gameObject.SetActive(true);
             chargingSmashParticles.Evaluate(_chargedTime);
+            _rb.linearVelocity = new Vector2(0, _rb.linearVelocity.y);
             if ((_chargedTime > 3) || (_cancelSmash))
             {
+                _animator.SetTrigger("SmashRelease");
                 Smash();
                 _charging = false;
                 _cancelSmash = false;
@@ -107,7 +121,7 @@ public class Movement : MonoBehaviour
             StartCoroutine(Throw(_direction));
         }
 
-        if (grabState != GrabState.Normal) return;
+        if (grabState != GrabState.Normal && grabState != GrabState.Grabber) return;
 
         _animator.SetBool(_walkBoolHash, _direction != 0);
         float newYRotation = transform.rotation.eulerAngles.y;
@@ -115,6 +129,25 @@ public class Movement : MonoBehaviour
         if (_direction > 0) newYRotation = 0;
         transform.rotation = Quaternion.Euler(new Vector3(0f, newYRotation, 0f));
     }
+
+    #endregion
+
+    #region Switch Animation
+
+    public void OnPrevious(InputAction.CallbackContext context)
+    {
+        if (!context.started || grabState != GrabState.Normal) return;
+        if (!isActive) return;
+        _animator.SetTrigger(_switchTriggerHash);
+    }
+
+    public void OnNext(InputAction.CallbackContext context)
+    {
+        if (!context.started || grabState != GrabState.Normal) return;
+        if (!isActive) return;
+        _animator.SetTrigger(_switchTriggerHash);
+    }
+
 
     #endregion
 
@@ -170,20 +203,21 @@ public class Movement : MonoBehaviour
     {
         if(!context.started || grabState != GrabState.Normal) return;
         if(!isActive) return;
-        
-        StartCoroutine(TryGrab());
+        TryGrab();
     }
     
-    private IEnumerator TryGrab()
+    private void TryGrab()
     {
-        yield return new WaitForSeconds(0.1f);
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right, grabRange);
-        Debug.DrawRay(transform.position, Vector2.right * grabRange, Color.red, 1f);
-        if (hit.transform.gameObject.layer == 8)
+        _animator.SetTrigger(_grabTrigHash);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, grabRange);
+        Debug.DrawRay(transform.position, transform.right * grabRange, Color.red, 1f);
+        
+        if(hit.transform && hit.transform.gameObject.layer == 8)
         {
             grabState = GrabState.Grabber;
             Movement grabbedMovement = hit.transform.GetComponent<Movement>();
             grabbedMovement.grabState = GrabState.Grabbed;
+            grabbedMovement.grabbedTransform = grabber.transform;
             _grabbed = grabbedMovement;
             grabber.SetActive(true);
             StartCoroutine(ThrowDelay());
@@ -191,7 +225,8 @@ public class Movement : MonoBehaviour
         else
         {
             grabState = GrabState.Normal;
-            _animator.SetTrigger(_grabTrigHash);
+            Debug.Log("here");
+            _animator.SetTrigger(_missedGrabTrigHash);
         }
     }
     #endregion
@@ -237,7 +272,6 @@ public class Movement : MonoBehaviour
         if (!isActive) return;
         _animator.SetTrigger(_castTriggerHash);
         Instantiate(Projectile_Prefab, Launch_Offset.position, transform.rotation);
-        ProjectileBehaviour p = Instantiate(Projectile_Prefab, Launch_Offset.position, transform.rotation);
     }
 
     #endregion
@@ -284,6 +318,7 @@ public class Movement : MonoBehaviour
 
         if (other.gameObject.layer == 7)
         {
+            Reset_Double_Jump_Switch();
             _healthSystem.addHealth(-30);
         }
     }

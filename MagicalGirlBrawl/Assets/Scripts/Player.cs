@@ -22,12 +22,14 @@ public class Player : MonoBehaviour
     public UnityEvent<InputAction.CallbackContext> onSmash = new();
     public UnityEvent<InputAction.CallbackContext> onSmashReleased = new();
     public UnityEvent<InputAction.CallbackContext> onGrab = new();
+    public UnityEvent<InputAction.CallbackContext> onPrevious = new();
+    public UnityEvent<InputAction.CallbackContext> onNext = new();
 
 
     private IEnumerator Switch(int new_puppet)
     {
         can_switch = false;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         _current += new_puppet;
         if(_current < 0) _current += Available.Count;
         _current %= Available.Count;
@@ -100,6 +102,7 @@ public class Player : MonoBehaviour
         if (!can_switch) return;
         if (!context.started) return;
         if (Available.Count == 0) return;
+        onPrevious.Invoke(context);
         StartCoroutine(Switch(-1));
     }
 
@@ -108,6 +111,7 @@ public class Player : MonoBehaviour
         if (!can_switch) return;
         if (!context.started) return;
         if (Available.Count == 0) return;
+        onNext.Invoke(context);
         StartCoroutine(Switch(1));
     }
 
