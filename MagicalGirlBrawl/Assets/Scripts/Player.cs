@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     private int playerIndex;
     [SerializeField] private int team;
     [SerializeField] private List<Movement> Available;
-    private int _current;
+    private int _current = 2;
 
     private bool can_switch = true;
 
