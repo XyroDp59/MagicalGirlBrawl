@@ -21,10 +21,16 @@ public class GameController : MonoBehaviour
     public GameObject restroom;
     [SerializeField] TextMeshProUGUI startAnnouncementText;
     
-    // FMOD
+    // ---------- KAILY trucs --------------
+    [SerializeField] private GameObject finMenu;
+    [SerializeField] private GameObject pauseMenu;
+    
     private FMOD.Studio.EventInstance _waitMusic;
     private FMOD.Studio.EventInstance _music;
-
+    
+    private bool _isPaused = false;
+    // --------------------
+    
     private void Awake()
     {
         instance = this;
@@ -66,8 +72,43 @@ public class GameController : MonoBehaviour
         
     }
 
+    private void EndGame()
+    {
+        Time.timeScale = 0;
+        finMenu.SetActive(true);
+    }
+
+    public void OnPause()
+    {
+        if (!_isPaused)
+        {
+            _isPaused = true;
+            Time.timeScale = 0;
+            _music.setPaused(true);
+            pauseMenu.SetActive(true);
+        }
+        else
+        {
+            _isPaused = false;
+            Time.timeScale = 1;
+            _music.setPaused(false);
+            pauseMenu.SetActive(false);
+        }
+    }
+    
     public void RestartGame()
     {
+        _music.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        _waitMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void MainMenu()
+    {
+        _music.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        _waitMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        
+        SceneManager.LoadScene("Menu");
     }
 }
