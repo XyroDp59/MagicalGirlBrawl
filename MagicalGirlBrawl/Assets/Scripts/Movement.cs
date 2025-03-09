@@ -8,12 +8,14 @@ public class Movement : MonoBehaviour
     [SerializeField] private float move_speed = 7f;
     [SerializeField] private float jump_power = 17f;
     [SerializeField] public int nb_double_jump = 2;
+    [SerializeField] private BoxCollider2D throwCollider;
     
     public SpriteRenderer childRenderer;
     private SpriteRenderer _renderer;
     private HealthSystem _healthSystem;
     private Rigidbody2D _rb;
     private Animator _animator;
+    private BoxCollider2D collider;
     private Movement _grabbed;
     public Transform grabbedTransform;
     
@@ -47,6 +49,7 @@ public class Movement : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
+        collider = GetComponent<BoxCollider2D>();
         _rb = GetComponent<Rigidbody2D>();
         //_playerInput = GetComponent<PlayerInput>();
         _animator = GetComponent<Animator>();
@@ -65,6 +68,8 @@ public class Movement : MonoBehaviour
 
     void Update()
     {
+        throwCollider.enabled = grabState == GrabState.Thrown;
+        
         if (grabState == GrabState.Grabbed)
         {
             _rb.AddForce(5*(grabbedTransform.position - transform.position), ForceMode2D.Force);
@@ -125,11 +130,15 @@ public class Movement : MonoBehaviour
         _renderer.enabled = state;
         if (!state)
         {
+            //collider.isTrigger = true;
+            _renderer.sortingOrder = -5;
             _animator.SetBool(_walkBoolHash, false);
             _direction = 0;
         }
         else
         {
+            //collider.isTrigger = false;
+            _renderer.sortingOrder = 0;
             Reset_Double_Jump_Switch();
         }
     }
