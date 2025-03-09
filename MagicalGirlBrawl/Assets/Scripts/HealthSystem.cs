@@ -31,7 +31,7 @@ public class HealthSystem : MonoBehaviour
     {
         currentHealth = Mathf.Clamp(currentHealth + health, 0, maxHealth);
         float f = (float)currentHealth / ((float)maxHealth);
-        healthBar.anchorMax = new Vector2(f, 1);
+        fillImage.rectTransform.anchorMax = new Vector2(f, 1);
         if (currentHealth <= 0)
         {
             TotemDeath.Invoke(GetComponent<Movement>());    
