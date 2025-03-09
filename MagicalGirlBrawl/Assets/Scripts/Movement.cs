@@ -251,11 +251,11 @@ public class Movement : MonoBehaviour
     private IEnumerator Throw(float direction)
     {
         _animator.SetTrigger(_throwTrigHash);
+        _canThrow = false;
         yield return new WaitForSeconds(0.2f);
         grabber.SetActive(false);
         StartCoroutine(_grabbed.GetThrown(direction));
         yield return new WaitForSeconds(0.3f);
-        _canThrow = false;
         grabState = GrabState.Normal;
     }
 
