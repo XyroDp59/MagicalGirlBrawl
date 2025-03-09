@@ -319,6 +319,7 @@ public class Movement : MonoBehaviour
 
         if (other.gameObject.layer == 7)
         {
+            Reset_Double_Jump_Switch();
             _healthSystem.addHealth(-30);
         }
     }
