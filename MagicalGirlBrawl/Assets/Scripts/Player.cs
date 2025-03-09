@@ -149,4 +149,8 @@ public class Player : MonoBehaviour
         onPause.Invoke(context);
     }
 
+    private void Update()
+    {
+        if (Available.Count == 0) GameController.instance.EndGame(playerIndex);
+    }
 }

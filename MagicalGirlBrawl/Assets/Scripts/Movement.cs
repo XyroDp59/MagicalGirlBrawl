@@ -43,6 +43,7 @@ public class Movement : MonoBehaviour
     private FMOD.Studio.EventInstance _throwInstance;
     private FMOD.Studio.EventInstance _maxedInstance;
     private FMOD.Studio.EventInstance _powerfullInstance;
+    private FMOD.Studio.EventInstance _switchInstance;
     
     private bool _maxed = false;
     
@@ -65,6 +66,7 @@ public class Movement : MonoBehaviour
         _throwInstance = FMODUnity.RuntimeManager.CreateInstance("event:/SFX/Slash");
         _maxedInstance = FMODUnity.RuntimeManager.CreateInstance("event:/SFX/Magic OVERDRIVE HAYAYAYAYA");
         _powerfullInstance = FMODUnity.RuntimeManager.CreateInstance("event:/SFX/Powerful Magic");
+        _switchInstance = FMODUnity.RuntimeManager.CreateInstance("event:/SFX/Arcane Magic");
     }
 
     void Update()
@@ -174,6 +176,8 @@ public class Movement : MonoBehaviour
         if (!context.started || grabState != GrabState.Normal) return;
         if (!isActive) return;
         _animator.SetTrigger(_switchTriggerHash);
+
+        _switchInstance.start();
     }
 
     public void OnNext(InputAction.CallbackContext context)
@@ -181,6 +185,8 @@ public class Movement : MonoBehaviour
         if (!context.started || grabState != GrabState.Normal) return;
         if (!isActive) return;
         _animator.SetTrigger(_switchTriggerHash);
+        
+        _switchInstance.start();
     }
 
 

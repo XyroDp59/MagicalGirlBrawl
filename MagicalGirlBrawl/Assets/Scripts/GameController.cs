@@ -25,9 +25,11 @@ public class GameController : MonoBehaviour
     
     private FMOD.Studio.EventInstance _waitMusic;
     private FMOD.Studio.EventInstance _music;
+    private FMOD.Studio.EventInstance _endMusic;
     
     private bool _isPaused = false;
     private bool _gameStarted = false;
+    private bool _gameEnded = false;
 
     public List<FMOD.Studio.EventInstance> _decompteInstances;
     // --------------------
@@ -37,6 +39,7 @@ public class GameController : MonoBehaviour
         instance = this;
         _waitMusic = FMODUnity.RuntimeManager.CreateInstance("event:/Soundtrack/A destiny cannot wait");
         _music = FMODUnity.RuntimeManager.CreateInstance("event:/Soundtrack/Magical Destiny");
+        _endMusic = FMODUnity.RuntimeManager.CreateInstance("event:/Soundtrack/And the winner is...");
         
         // !!!!!! PAS TOUCHER !!!!!!! L'ORDRE EST GIGA IMPORTANT !!!!!!!!
         _decompteInstances = new List<FMOD.Studio.EventInstance>();
@@ -82,8 +85,15 @@ public class GameController : MonoBehaviour
         
     }
 
-    private void EndGame()
+    public void EndGame(int playerIndex)
     {
+        if (_gameEnded) return;
+        _gameEnded = true;
+        
+        _waitMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        _music.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        _endMusic.start();
+        
         Time.timeScale = 0;
         finMenu.SetActive(true);
     }
@@ -111,6 +121,7 @@ public class GameController : MonoBehaviour
     {
         _music.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         _waitMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        _endMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
@@ -119,6 +130,7 @@ public class GameController : MonoBehaviour
     {
         _music.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         _waitMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        _endMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         
         SceneManager.LoadScene("Menu");
     }
