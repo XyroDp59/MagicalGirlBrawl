@@ -568,11 +568,33 @@
                 },
                 {
                     "name": "",
+                    "id": "a9ba68a9-9e6c-44f3-bbdd-287dd39a7dec",
+                    "path": "<HID::Bensussen Deutsch & Associates,Inc.(BDA) NSW Wired controller>/button5",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Grab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "6a607ba6-0642-4be4-a9ab-4f88ffac147d",
                     "path": "<Keyboard>/p",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse;Gamepad",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "771e35da-ef72-44ce-96ca-9100d3783c42",
+                    "path": "<HID::Bensussen Deutsch & Associates,Inc.(BDA) NSW Wired controller>/button10",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false

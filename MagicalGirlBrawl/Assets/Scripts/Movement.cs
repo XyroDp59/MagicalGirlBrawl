@@ -8,7 +8,6 @@ public class Movement : MonoBehaviour
     [SerializeField] private float move_speed = 7f;
     [SerializeField] private float jump_power = 17f;
     [SerializeField] public int nb_double_jump = 2;
-    [SerializeField] private BoxCollider2D throwCollider;
     
     public SpriteRenderer childRenderer;
     private SpriteRenderer _renderer;
@@ -58,6 +57,7 @@ public class Movement : MonoBehaviour
         _renderer = GetComponent<SpriteRenderer>();
         grabState = GrabState.Normal;
         _healthSystem = GetComponent<HealthSystem>();
+        throwCollider.GetComponent<CollisionDamager>().playerCaster = this;
         
         // ---------- Kaily Audio -------------
         _jumpInstance = FMODUnity.RuntimeManager.CreateInstance("event:/SFX/Jump");
@@ -231,6 +231,8 @@ public class Movement : MonoBehaviour
     [SerializeField] private GameObject grabber;
     [SerializeField] private Vector2 throwStrength;
     [SerializeField] private float grabRange;
+    [SerializeField] private BoxCollider2D throwCollider;
+
 
     public GrabState grabState;
     public enum GrabState
@@ -284,11 +286,11 @@ public class Movement : MonoBehaviour
         _canThrow = true;
     }
 
-    public IEnumerator GetThrown(float direction)
+    public IEnumerator GetThrown(float direction, bool manualImpulse, float duration)
     {
         grabState = GrabState.Thrown;
-        _rb.linearVelocity = new Vector2(direction > 0 ? throwStrength.x : -throwStrength.x, throwStrength.y);
-        yield return new WaitForSeconds(1f);
+        if(manualImpulse) _rb.linearVelocity = new Vector2(direction > 0 ? throwStrength.x : -throwStrength.x, throwStrength.y);
+        yield return new WaitForSeconds(duration);
         grabState = GrabState.Normal;
     }
 
@@ -300,7 +302,7 @@ public class Movement : MonoBehaviour
         _canThrow = false;
         yield return new WaitForSeconds(0.2f);
         grabber.SetActive(false);
-        StartCoroutine(_grabbed.GetThrown(direction));
+        StartCoroutine(_grabbed.GetThrown(direction, true, 1f));
         yield return new WaitForSeconds(0.3f);
         grabState = GrabState.Normal;
     }
@@ -336,16 +338,16 @@ public class Movement : MonoBehaviour
     public void OnSmash(InputAction.CallbackContext context)
     {
         if (grabState != GrabState.Normal) return;
-        if (!_cancelSmash) return;
+        if (!_canSmash) return;
         _charging = true;
         StartCoroutine(SmashCooldown());
     }
 
     IEnumerator SmashCooldown()
     {
-        _canSmash = true;
-        yield return new WaitForSeconds(0.2f);
         _canSmash = false;
+        yield return new WaitForSeconds(0.2f);
+        _canSmash = true;
     }
 
     public void OnSmashRelease(InputAction.CallbackContext context)
@@ -375,6 +377,13 @@ public class Movement : MonoBehaviour
     
     private void OnCollisionEnter2D(Collision2D other)
     {
+        if (other.gameObject.TryGetComponent<BlastZone>(out BlastZone blastZone))
+        {
+            _healthSystem.addHealth(blastZone.damageDealt);
+            StartCoroutine(GetThrown(0, false, blastZone.stunDuration));
+            nb_double_jump = 1;
+        }
+        
         if (other.gameObject.CompareTag("Ground"))
         {
             Reset_Double_Jump_Ground();
