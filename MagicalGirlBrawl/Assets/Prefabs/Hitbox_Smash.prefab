@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 8666646851741213793}
   - component: {fileID: 313136989453691761}
   - component: {fileID: 6055333660405119269}
+  - component: {fileID: 626193949627303550}
+  - component: {fileID: 2625166513525849668}
   m_Layer: 0
   m_Name: Hitbox_Smash
   m_TagString: Untagged
@@ -102,12 +104,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitbox: {fileID: 6693170896064972984}
-  Size:
+  SizeCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0.9993286
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -115,8 +117,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 1
-      value: 3
+      time: 0.99681747
+      value: 2.992143
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -124,8 +126,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 4
-      value: 3
+      time: 3.999168
+      value: 2.9940932
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -135,12 +137,12 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  Damage:
+  DamageCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
-      value: 0
+      time: -0.00043211877
+      value: 10.016226
       inSlope: 2
       outSlope: 2
       tangentMode: 0
@@ -148,8 +150,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 1
-      value: 1
+      time: 0.9706507
+      value: 20.023775
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -157,8 +159,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 4
-      value: 1
+      time: 4.062333
+      value: 20.059113
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -169,6 +171,55 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   charged_time: 0
+--- !u!58 &626193949627303550
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6693170896064972984}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 0.5
+--- !u!114 &2625166513525849668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6693170896064972984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92850c7a586e1c74cb694f128deaeb50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: -1
 --- !u!1001 &2253796257195062007
 PrefabInstance:
   m_ObjectHideFlags: 0
