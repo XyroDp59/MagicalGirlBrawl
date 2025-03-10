@@ -252,6 +252,14 @@ public class Movement : MonoBehaviour
         
         _grabInstance.start();
     }
+
+    public void GrabCancel()
+    {
+        grabber.SetActive(false);
+        _animator.SetTrigger(_missedGrabTrigHash);
+        _canThrow = false;
+        StartCoroutine(_grabbed.GetThrown(0, false, 0.2f));
+    }
     
     private void TryGrab()
     {
@@ -263,6 +271,7 @@ public class Movement : MonoBehaviour
         {
             grabState = GrabState.Grabber;
             Movement grabbedMovement = hit.transform.GetComponent<Movement>();
+            if(grabbedMovement.grabber.activeSelf) grabbedMovement.GrabCancel();
             grabbedMovement.grabState = GrabState.Grabbed;
             grabbedMovement.grabbedTransform = grabber.transform;
             _grabbed = grabbedMovement;

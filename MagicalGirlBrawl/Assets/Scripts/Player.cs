@@ -91,6 +91,7 @@ public class Player : MonoBehaviour
         if(Available.Count > 0)
         {
             Available.Remove(m);
+            m.isActive = false;
             m.gameObject.SetActive(false);
         }
     }
