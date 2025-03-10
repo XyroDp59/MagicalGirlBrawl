@@ -93,10 +93,6 @@ public class Player : MonoBehaviour
             Available.Remove(m);
             m.gameObject.SetActive(false);
         }
-        else
-        {
-            GameController.instance.RestartGame();
-        }
     }
     
     private IEnumerator Switch(int new_puppet, bool onDeath = false)
