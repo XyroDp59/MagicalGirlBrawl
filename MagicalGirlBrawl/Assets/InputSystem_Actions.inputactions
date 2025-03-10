@@ -634,6 +634,17 @@
                 },
                 {
                     "name": "",
+                    "id": "86eb314f-46a5-436b-b710-e392f02beae7",
+                    "path": "<HID::�Microsoft Corporation Controller>/button6",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad;Joystick",
+                    "action": "Grab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "6a607ba6-0642-4be4-a9ab-4f88ffac147d",
                     "path": "<Keyboard>/p",
                     "interactions": "",
