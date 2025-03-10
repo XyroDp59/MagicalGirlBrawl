@@ -255,7 +255,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: 27aabb21-17b3-43a1-8654-4f4bbde6afb2
-    m_ActionName: 'Player/Pause[/Keyboard/p]'
+    m_ActionName: 'Player/Pause[/Keyboard/escape]'
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -593,7 +593,19 @@ MonoBehaviour:
         m_CallState: 2
   onPause:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: GameController, Assembly-CSharp
+        m_MethodName: OnPause
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &3495498847955186275
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -618,6 +630,14 @@ PrefabInstance:
       propertyPath: isActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6661116319542254824, guid: 26c3839cff26d134391064cacb1b9cf9, type: 3}
+      propertyPath: 'animatorControllers.Array.data[0]'
+      value: 
+      objectReference: {fileID: 9100000, guid: 3384769b3078d4872a33e3d7de17b22c, type: 2}
+    - target: {fileID: 6661116319542254824, guid: 26c3839cff26d134391064cacb1b9cf9, type: 3}
+      propertyPath: 'animatorControllers.Array.data[1]'
+      value: 
+      objectReference: {fileID: 9100000, guid: 36155231108b7e7e3aa541a5c06daa98, type: 2}
     - target: {fileID: 8166813545408776777, guid: 26c3839cff26d134391064cacb1b9cf9, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.44430092
@@ -704,6 +724,14 @@ PrefabInstance:
       propertyPath: isActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6661116319542254824, guid: 26c3839cff26d134391064cacb1b9cf9, type: 3}
+      propertyPath: 'animatorControllers.Array.data[0]'
+      value: 
+      objectReference: {fileID: 9100000, guid: 3384769b3078d4872a33e3d7de17b22c, type: 2}
+    - target: {fileID: 6661116319542254824, guid: 26c3839cff26d134391064cacb1b9cf9, type: 3}
+      propertyPath: 'animatorControllers.Array.data[1]'
+      value: 
+      objectReference: {fileID: 9100000, guid: 36155231108b7e7e3aa541a5c06daa98, type: 2}
     - target: {fileID: 8166813545408776777, guid: 26c3839cff26d134391064cacb1b9cf9, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.44430092
@@ -790,6 +818,18 @@ PrefabInstance:
       propertyPath: isActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6661116319542254824, guid: 26c3839cff26d134391064cacb1b9cf9, type: 3}
+      propertyPath: 'animatorControllers.Array.data[0]'
+      value: 
+      objectReference: {fileID: 9100000, guid: 3384769b3078d4872a33e3d7de17b22c, type: 2}
+    - target: {fileID: 6661116319542254824, guid: 26c3839cff26d134391064cacb1b9cf9, type: 3}
+      propertyPath: 'animatorControllers.Array.data[1]'
+      value: 
+      objectReference: {fileID: 9100000, guid: 36155231108b7e7e3aa541a5c06daa98, type: 2}
+    - target: {fileID: 7730018646676745857, guid: 26c3839cff26d134391064cacb1b9cf9, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 36155231108b7e7e3aa541a5c06daa98, type: 2}
     - target: {fileID: 8166813545408776777, guid: 26c3839cff26d134391064cacb1b9cf9, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.44430092

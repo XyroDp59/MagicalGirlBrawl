@@ -133,6 +133,7 @@ public class GameController : MonoBehaviour
     
     public void RestartGame()
     {
+        Time.timeScale = 1;
         _music.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         _waitMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         _endMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
@@ -144,6 +145,7 @@ public class GameController : MonoBehaviour
     public void MainMenu()
     {
         Player.playerCount = -1;
+        Time.timeScale = 1;
         
         _music.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         _waitMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);

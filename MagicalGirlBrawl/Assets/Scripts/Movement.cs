@@ -8,6 +8,8 @@ public class Movement : MonoBehaviour
     [SerializeField] private float move_speed = 7f;
     [SerializeField] private float jump_power = 17f;
     [SerializeField] public int nb_double_jump = 2;
+
+    [SerializeField] private RuntimeAnimatorController[] animatorControllers;
     
     public SpriteRenderer childRenderer;
     private SpriteRenderer _renderer;
@@ -58,6 +60,9 @@ public class Movement : MonoBehaviour
         grabState = GrabState.Normal;
         _healthSystem = GetComponent<HealthSystem>();
         throwCollider.GetComponent<CollisionDamager>().playerCaster = this;
+
+
+        _animator.runtimeAnimatorController = animatorControllers[playerID];
         
         // ---------- Kaily Audio -------------
         _jumpInstance = FMODUnity.RuntimeManager.CreateInstance("event:/SFX/Jump");
