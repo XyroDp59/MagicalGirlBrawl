@@ -102,11 +102,11 @@ public class GameController : MonoBehaviour
 
         if (playerIndex == 0)
         {
-            endGameText.text = "l'héroine du jour est : \nRed !";
+            endGameText.text = "L'héroine du jour est :\nRed !";
         }
         else
         {
-            endGameText.text = "L'héroine du jour est : \nBlue !";
+            endGameText.text = "L'héroine du jour est :\nBlue !";
         }
     }
 

@@ -387,12 +387,16 @@ PrefabInstance:
       value: GameController
       objectReference: {fileID: 0}
     - target: {fileID: 8152901443147041721, guid: 8841b971b7f06604387cfef49207366f, type: 3}
+      propertyPath: m_text
+      value: "L'h\xE9roine du jour est : \nBlue !"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8152901443147041721, guid: 8841b971b7f06604387cfef49207366f, type: 3}
       propertyPath: m_fontSize
       value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 8152901443147041721, guid: 8841b971b7f06604387cfef49207366f, type: 3}
       propertyPath: m_margin.z
-      value: 0.6890258
+      value: -5.762665
       objectReference: {fileID: 0}
     - target: {fileID: 8152901443147041721, guid: 8841b971b7f06604387cfef49207366f, type: 3}
       propertyPath: m_fontAsset

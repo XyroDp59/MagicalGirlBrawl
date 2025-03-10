@@ -120,11 +120,19 @@ public class Player : MonoBehaviour
     
     private void OnTotemDeath(Movement m)
     {
-        if(m.isActive)
-            StartCoroutine(Switch(-1, true));
+        if (Available.Count > 1)
+        {
+            if (m.isActive)
+                StartCoroutine(Switch(-1, true));
+            else
+            {
+                RemoveMovement(m);
+            }
+        }
         else
         {
             RemoveMovement(m);
+            GameController.instance.EndGame(playerIndex);
         }
     }
 
@@ -166,8 +174,4 @@ public class Player : MonoBehaviour
         onPause.Invoke(context);
     }
 
-    private void Update()
-    {
-        if (Available.Count == 0) GameController.instance.EndGame(playerIndex);
-    }
 }
