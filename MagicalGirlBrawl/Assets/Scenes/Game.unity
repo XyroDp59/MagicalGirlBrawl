@@ -736,6 +736,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 319324160465228926, guid: 889d34bae3cb34366a3ef632cba7e58d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 607018994096149656, guid: 889d34bae3cb34366a3ef632cba7e58d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1961154316788367363, guid: 889d34bae3cb34366a3ef632cba7e58d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.44430092
@@ -775,6 +783,22 @@ PrefabInstance:
     - target: {fileID: 1961154316788367363, guid: 889d34bae3cb34366a3ef632cba7e58d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3789146653708310405, guid: 889d34bae3cb34366a3ef632cba7e58d, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 36155231108b7e7e3aa541a5c06daa98, type: 2}
+    - target: {fileID: 4077771832841344867, guid: 889d34bae3cb34366a3ef632cba7e58d, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 3384769b3078d4872a33e3d7de17b22c, type: 2}
+    - target: {fileID: 6612421896929008866, guid: 889d34bae3cb34366a3ef632cba7e58d, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 3384769b3078d4872a33e3d7de17b22c, type: 2}
+    - target: {fileID: 7728104125571391257, guid: 889d34bae3cb34366a3ef632cba7e58d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7869740717497093318, guid: 889d34bae3cb34366a3ef632cba7e58d, type: 3}
       propertyPath: m_ActionEvents.Array.size
