@@ -172,7 +172,6 @@ public class Player : MonoBehaviour
 
     public void OnPause(InputAction.CallbackContext context)
     {
-        onPause.Invoke(context);
+        GameController.instance.OnPause();
     }
-
 }
