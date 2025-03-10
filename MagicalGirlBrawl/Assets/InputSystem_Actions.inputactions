@@ -348,6 +348,17 @@
                 },
                 {
                     "name": "",
+                    "id": "a7e5c5d6-9dcb-45b4-b464-bae84168f7b9",
+                    "path": "<HID::mayflash limited MAYFLASH GameCube Controller Adapter>/button3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "cbac6039-9c09-46a1-b5f2-4e5124ccb5ed",
                     "path": "<Keyboard>/2",
                     "interactions": "",
@@ -375,6 +386,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Joystick;Gamepad",
+                    "action": "Next",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "51f723bf-e8dd-4100-a163-91d62732d994",
+                    "path": "<HID::mayflash limited MAYFLASH GameCube Controller Adapter>/button6",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Next",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -491,6 +513,17 @@
                 },
                 {
                     "name": "",
+                    "id": "22f8bba1-db1b-4337-8dcc-6558b399fe00",
+                    "path": "<HID::mayflash limited MAYFLASH GameCube Controller Adapter>/button5",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Previous",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "1c04ea5f-b012-41d1-a6f7-02e963b52893",
                     "path": "<Keyboard>/e",
                     "interactions": "",
@@ -557,6 +590,17 @@
                 },
                 {
                     "name": "",
+                    "id": "2a88310c-d183-4d15-b107-65c6e8b82630",
+                    "path": "<HID::mayflash limited MAYFLASH GameCube Controller Adapter>/button2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Smash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "ced3213d-88a8-4a03-be44-c2b5c111357f",
                     "path": "<Keyboard>/e",
                     "interactions": "",
@@ -570,6 +614,17 @@
                     "name": "",
                     "id": "a9ba68a9-9e6c-44f3-bbdd-287dd39a7dec",
                     "path": "<HID::Bensussen Deutsch & Associates,Inc.(BDA) NSW Wired controller>/button5",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Grab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c3bd3179-1666-4b08-b982-f77dfda021f8",
+                    "path": "<HID::mayflash limited MAYFLASH GameCube Controller Adapter>/button8",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
