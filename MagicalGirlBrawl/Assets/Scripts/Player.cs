@@ -8,7 +8,6 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    public static int playerCount = -1;
     private int playerIndex;
     [SerializeField] private int team;
     [SerializeField] private List<Movement> Available;
@@ -71,8 +70,7 @@ public class Player : MonoBehaviour
     
     private void Awake()
     {
-        playerCount++;
-        playerIndex = playerCount;
+        playerIndex = GameController.instance.players.Count;
         //Debug.Log(playerIndex);
         GameController.instance.players.Add(this);
         playerColor = GameController.instance.colors[playerIndex];

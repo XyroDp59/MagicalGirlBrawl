@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour
 
     public List<Player> players = new List<Player>();
     private List<Player> playersReady = new List<Player>();
+    [SerializeField] private ConnectionManager connection;
     
     
     WaitForSeconds second;
@@ -133,18 +134,17 @@ public class GameController : MonoBehaviour
     
     public void RestartGame()
     {
-        Time.timeScale = 1;
         _music.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         _waitMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         _endMusic.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-
-        Player.playerCount = -1;
+        
+        connection.ForceDisconnect();
+        Time.timeScale = 1;
         SceneManager.LoadScene("Game");
     }
 
     public void MainMenu()
     {
-        Player.playerCount = -1;
         Time.timeScale = 1;
         
         _music.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
