@@ -117,6 +117,7 @@ public class GameController : MonoBehaviour
         {
             _isPaused = true;
             Time.timeScale = 0;
+            _waitMusic.setPaused(true);
             _music.setPaused(true);
             pauseMenu.SetActive(true);
         }
@@ -125,6 +126,7 @@ public class GameController : MonoBehaviour
             _isPaused = false;
             Time.timeScale = 1;
             _music.setPaused(false);
+            _waitMusic.setPaused(false);
             pauseMenu.SetActive(false);
         }
     }
