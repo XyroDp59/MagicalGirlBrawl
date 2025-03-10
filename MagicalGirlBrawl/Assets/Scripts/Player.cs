@@ -73,7 +73,7 @@ public class Player : MonoBehaviour
     {
         playerCount++;
         playerIndex = playerCount;
-        Debug.Log(playerIndex);
+        //Debug.Log(playerIndex);
         GameController.instance.players.Add(this);
         playerColor = GameController.instance.colors[playerIndex];
 
@@ -88,32 +88,6 @@ public class Player : MonoBehaviour
 
     public void RemoveMovement(Movement m)
     {
-        StartCoroutine(RemoveMovementRoutine(m));
-    }
-    
-    private IEnumerator Switch(int new_puppet)
-    {
-        can_switch = false;
-        Vector3 p1 = Available.ElementAt(_current).transform.position;
-        _current += new_puppet;
-        if(_current < 0) _current += Available.Count;
-        _current %= Available.Count;
-        StartCoroutine(Trail(p1,Available.ElementAt(_current)));
-        yield return new WaitForSeconds(1f);
-        int i = 0;
-        foreach (var player in Available)
-        {
-            player.SetState(i == _current);
-            i += 1;
-        }
-        can_switch = true;
-    }
-
-
-    private IEnumerator RemoveMovementRoutine(Movement m)
-    {
-        yield return null;
-        
         if(Available.Count > 0)
         {
             Available.Remove(m);
@@ -124,6 +98,40 @@ public class Player : MonoBehaviour
             GameController.instance.RestartGame();
         }
     }
+    
+    private IEnumerator Switch(int new_puppet, bool onDeath = false)
+    {
+        can_switch = false;
+        Movement oldMovement = Available.ElementAt(_current);
+        Vector3 p1 = oldMovement.transform.position;
+        _current += new_puppet;
+        
+        if(_current < 0) _current += onDeath ? Available.Count -1 : Available.Count;
+        _current %= onDeath ? Available.Count -1 : Available.Count;
+        
+        if(onDeath) RemoveMovement(oldMovement);//Note: suppose qu'on ne switch que si le mouvement mort est actif
+        
+        Movement newMovement = Available.ElementAt(_current);
+        StartCoroutine(Trail(p1,newMovement));
+        yield return new WaitForSeconds(1f);
+
+        foreach (var player in Available)
+        {
+            player.SetState(player == newMovement);
+        }
+        can_switch = true;
+    }
+    
+    private void OnTotemDeath(Movement m)
+    {
+        if(m.isActive)
+            StartCoroutine(Switch(-1, true));
+        else
+        {
+            RemoveMovement(m);
+        }
+    }
+
 
     public void OnPrevious(InputAction.CallbackContext context)
     {
@@ -141,11 +149,6 @@ public class Player : MonoBehaviour
         if (Available.Count == 0) return;
         onNext.Invoke(context);
         StartCoroutine(Switch(1));
-    }
-
-    private void OnTotemDeath(Movement m)
-    {
-        StartCoroutine(Switch(-1));
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
