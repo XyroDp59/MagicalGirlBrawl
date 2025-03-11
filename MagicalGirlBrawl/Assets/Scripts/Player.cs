@@ -101,7 +101,7 @@ public class Player : MonoBehaviour
         Movement oldMovement = Available[_current];
         Vector3 p1 = oldMovement.transform.position;
         // ptdr j'ai compris à moitié ce qu'il se passe ici
-        /*     _current += new_puppet;
+             _current += new_puppet;
 
                if(_current < 0) _current += onDeath ? Available.Count -1 : Available.Count;
                _current %= onDeath ? Available.Count -1 : Available.Count;
@@ -109,9 +109,9 @@ public class Player : MonoBehaviour
                if(onDeath) RemoveMovement(oldMovement);//Note: suppose qu'on ne switch que si le mouvement mort est actif
 
                Movement newMovement = Available.ElementAt(_current);
-           */
+           
 
-        Available.Remove(oldMovement);
+    /*    Available.Remove(oldMovement);
         int newPuppetID = 0;
         Movement newMovement = Available[0];
 
@@ -129,7 +129,7 @@ public class Player : MonoBehaviour
         _current = newPuppetID;
         newMovement = Available[newPuppetID];
         Available.Add(oldMovement);
-
+    */
         //------------------------ en dessous ça a du sens
 
         StartCoroutine(Trail(p1,newMovement));
