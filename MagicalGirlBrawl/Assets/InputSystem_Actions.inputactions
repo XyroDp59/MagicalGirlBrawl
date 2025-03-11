@@ -36,7 +36,7 @@
                     "name": "Interact",
                     "type": "Button",
                     "id": "852140f2-7766-474d-8707-702459ba45f3",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "Hold",
                     "initialStateCheck": false
@@ -338,7 +338,7 @@
                 {
                     "name": "",
                     "id": "02118a21-0683-42ec-af78-47216254f963",
-                    "path": "<Gamepad>/buttonWest",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
@@ -394,6 +394,17 @@
                     "name": "",
                     "id": "51f723bf-e8dd-4100-a163-91d62732d994",
                     "path": "<HID::mayflash limited MAYFLASH GameCube Controller Adapter>/button6",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Next",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "50a5ed01-3ec2-4cda-91be-0bc0557e7fba",
+                    "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -480,6 +491,28 @@
                 },
                 {
                     "name": "",
+                    "id": "b4eee90a-2cca-43d1-9f1c-1b8fdf1a87bb",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6f3ffff9-6997-4ad9-96bf-6c46ede35a16",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "1534dc16-a6aa-499d-9c3a-22b47347b52a",
                     "path": "<Keyboard>/1",
                     "interactions": "",
@@ -515,6 +548,17 @@
                     "name": "",
                     "id": "22f8bba1-db1b-4337-8dcc-6558b399fe00",
                     "path": "<HID::mayflash limited MAYFLASH GameCube Controller Adapter>/button5",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Previous",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "59302b3a-1042-4b23-9bc2-dff2002f7c31",
+                    "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -601,6 +645,17 @@
                 },
                 {
                     "name": "",
+                    "id": "a09c8d22-3c25-44b1-a301-b768c3ff1259",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Smash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "ced3213d-88a8-4a03-be44-c2b5c111357f",
                     "path": "<Keyboard>/e",
                     "interactions": "",
@@ -645,6 +700,17 @@
                 },
                 {
                     "name": "",
+                    "id": "69be4755-d532-443a-bcf7-2cfbfbec36c0",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Grab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "6a607ba6-0642-4be4-a9ab-4f88ffac147d",
                     "path": "<Keyboard>/p",
                     "interactions": "",
@@ -672,6 +738,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1caaec69-68fb-47df-8089-4b305a1ac161",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
