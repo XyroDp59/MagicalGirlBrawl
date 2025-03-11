@@ -12,7 +12,12 @@ public class Area_of_Attack : MonoBehaviour
     void Start()
     {
         size = SizeCurve.Evaluate(charged_time);
-        hitbox.transform.localScale = new Vector3(size, size, size);
+        //hitbox.transform.localScale = new Vector3(size, size, size);
+        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+        Color c = sprite.color;
+        c.a = size;
+        sprite.color = c;
+
         Destroy(gameObject,0.25f);
         GetComponent<CollisionDamager>().damage = (int) DamageCurve.Evaluate(charged_time);
     }

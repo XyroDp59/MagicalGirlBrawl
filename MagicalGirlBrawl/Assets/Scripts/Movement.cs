@@ -328,15 +328,25 @@ public class Movement : MonoBehaviour
     [Header("Blaster")]
     [SerializeField] private ProjectileBehaviour Projectile_Prefab;
     [SerializeField] private Transform Launch_Offset;
+    bool _canAttack = true;
 
     public void OnAttack(InputAction.CallbackContext context)
     {
         if (!context.started || grabState != GrabState.Normal) return;
-        if (!isActive) return;
+        if (!isActive || !_canAttack) return;
+        StartCoroutine(BlasterCooldown());
+
         _animator.SetTrigger(_castTriggerHash);
         ProjectileBehaviour b = Instantiate(Projectile_Prefab, Launch_Offset.position, transform.rotation);
         b.GetComponent<CollisionDamager>().playerCaster = this;
         _sparkleInstance.start();
+    }
+
+    IEnumerator BlasterCooldown()
+    {
+        _canAttack = false;
+        yield return new WaitForSeconds(0.1f);
+        _canAttack = true;
     }
 
     #endregion
@@ -378,7 +388,7 @@ public class Movement : MonoBehaviour
         _maxedInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);  // FMOD SFX
         _powerfullInstance.start(); // FMOD SFX
         
-        Area_of_Attack a = Instantiate(Smash_Prefab, Launch_Offset.position, transform.rotation);
+        Area_of_Attack a = Instantiate(Smash_Prefab, Launch_Offset);
         a.charged_time = _chargedTime;
         chargingSmashParticles.gameObject.SetActive(false);
         a.GetComponent<CollisionDamager>().playerCaster = this;
@@ -398,21 +408,19 @@ public class Movement : MonoBehaviour
             if(newHealth > 0) StartCoroutine(GetThrown(0, false, blastZone.stunDuration));
             nb_double_jump = 1;
         }
-        
-        if (other.gameObject.CompareTag("Ground"))
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
         {
             Reset_Double_Jump_Ground();
         }
-
-        if (other.gameObject.layer == 7)
-        {
-            Reset_Double_Jump_Switch();
-        }
     }
 
-    private void OnCollisionExit2D(Collision2D other)
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        if (other.gameObject.CompareTag("Ground"))
+        if (collision.gameObject.CompareTag("Ground"))
         {
             Remove_Ground_Jump();
         }

@@ -81,7 +81,7 @@ public class Player : MonoBehaviour
             movement.GetComponent<HealthSystem>().SetColor(playerColor);
             movement.playerID = playerIndex;
         }
-        transform.position = GameController.instance.restroom.transform.GetChild(playerIndex).position;
+        transform.position = GameController.instance.restroom.transform.GetChild(playerIndex).GetChild(0).position;
     }
 
     public void RemoveMovement(Movement m)
@@ -96,17 +96,42 @@ public class Player : MonoBehaviour
     
     private IEnumerator Switch(int new_puppet, bool onDeath = false)
     {
+        if(Available.Count == 0) { yield return null; }
         can_switch = false;
-        Movement oldMovement = Available.ElementAt(_current);
+        Movement oldMovement = Available[_current];
         Vector3 p1 = oldMovement.transform.position;
-        _current += new_puppet;
-        
-        if(_current < 0) _current += onDeath ? Available.Count -1 : Available.Count;
-        _current %= onDeath ? Available.Count -1 : Available.Count;
-        
-        if(onDeath) RemoveMovement(oldMovement);//Note: suppose qu'on ne switch que si le mouvement mort est actif
-        
-        Movement newMovement = Available.ElementAt(_current);
+        // ptdr j'ai compris à moitié ce qu'il se passe ici
+        /*     _current += new_puppet;
+
+               if(_current < 0) _current += onDeath ? Available.Count -1 : Available.Count;
+               _current %= onDeath ? Available.Count -1 : Available.Count;
+
+               if(onDeath) RemoveMovement(oldMovement);//Note: suppose qu'on ne switch que si le mouvement mort est actif
+
+               Movement newMovement = Available.ElementAt(_current);
+           */
+
+        Available.Remove(oldMovement);
+        int newPuppetID = 0;
+        Movement newMovement = Available[0];
+
+        if(Available.Count != 0)    // S'il n'y a qu'un seul pantin autre que le current, pas besoin de chercher le plus à droite/gauche
+        {
+            if (new_puppet > 0)
+            {
+                newPuppetID = (Available[0].transform.position.x > Available[1].transform.position.x) ? 0 : 1;
+            }
+            if (new_puppet < 0)
+            {
+                newPuppetID = (Available[0].transform.position.x > Available[1].transform.position.x) ? 1 : 0;
+            }
+        }
+        _current = newPuppetID;
+        newMovement = Available[newPuppetID];
+        Available.Add(oldMovement);
+
+        //------------------------ en dessous ça a du sens
+
         StartCoroutine(Trail(p1,newMovement));
         yield return new WaitForSeconds(1f);
 

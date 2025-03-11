@@ -189,7 +189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92850c7a586e1c74cb694f128deaeb50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 8
+  damage: 2
   playerCaster: {fileID: 0}
 --- !u!1001 &5174249967054686104
 PrefabInstance:
