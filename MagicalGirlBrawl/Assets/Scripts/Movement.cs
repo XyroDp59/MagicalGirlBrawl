@@ -80,7 +80,7 @@ public class Movement : MonoBehaviour
         
         if (grabState == GrabState.Grabbed)
         {
-            _rb.AddForce(5*(grabbedTransform.position - transform.position), ForceMode2D.Force);
+            _rb.AddForce(Time.deltaTime*2500*(grabbedTransform.position - transform.position), ForceMode2D.Force);
             return;
         }
 
